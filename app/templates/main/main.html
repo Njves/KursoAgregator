@@ -1,1 +1,44 @@
 {% extends 'base.html' %}
+{% block content %}
+<link href="{{ url_for('static', filename='style/main.css', v=1) }} }}" rel="stylesheet" crossorigin="anonymous">
+<main>
+    <div class="main">
+        <div class="left">
+            <h2 style="color: white">Агрегатор курсов</h2>
+            <p>Наша цель собрать курсы по</p>
+            <p>программированию в одном месте,</p>
+            <p>чтобы разработчикам было проще</p>
+            <p>улучшить свои навыки.</p>
+        </div>
+        <div class="center">
+            <img src="{{ url_for('static', filename='icon/book.svg') }}" alt="Книга">
+        </div>
+        <div class="right">
+            <p>1000+<br/>Курсов</p>
+            <p>20+<br/>Направлений</p>
+            <p>150+<br/>Отзывов</p>
+            <p>15<br/>Школ</p>
+        </div>
+    </div>
+    <div class="toggler">
+        <h2>Направления</h2>
+        <div class="grid">
+            <a href="#" class="arrow_left"><img  src="{{ url_for('static', filename='icon/chevron-left.svg') }}" width="32" alt="Предыдущие категории"></a>
+            <div class="grid_center">
+                <div class="grid_dir">
+                    <p>Python</p>
+                    <p>Golang</p>
+                    <p>Data Science</p>
+                    <p>Java</p>
+                    <p>Kotlin</p>
+                    <p>Backend</p>
+                    <p>Unity</p>
+                    <p>SQL</p>
+                    <p>Fronted</p>
+                </div>
+            </div>
+            <a href="#" class="arrow_right"><img src="{{ url_for('static', filename='icon/chevron-right.svg') }}" width="32" alt="Следующие категории"></a>
+        </div>
+    </div>
+</main>
+{% endblock %}

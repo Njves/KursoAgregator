@@ -1,3 +1,6 @@
 body {
     background-color: rgba(51, 55, 70, 1);
 }
+* {
+    color: white;
+}

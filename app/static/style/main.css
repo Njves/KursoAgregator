@@ -1,0 +1,73 @@
+.main  {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    margin-top: 50px;
+}
+main {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+.right {
+    display: grid;
+    grid-template-columns: 100px 100px;
+    grid-template-rows: 50px 50px;
+    margin-left: 50px;
+    width: 250px;
+}
+.left {
+    margin-right: 50px;
+    width: 250px;
+}
+.left > p {
+    margin-bottom: 0;
+    font-size: 15px;
+}
+.arrow_left, .arrow_right{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 25px 8px 25px 8px;
+    background-color: rgba(62, 67, 84, 1);
+    border-radius: 10px;
+}
+.grid {
+    display: flex;
+    justify-content: center;
+}
+.toggler {
+    margin-top: 5%;
+     display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-content: center;
+}
+.grid_center {
+    display: flex;
+    justify-content: center;
+}
+
+.toggler h2 {
+    display: flex;
+    justify-content: center;
+}
+.grid_dir {
+    display: grid;
+    grid-template-columns: 150px 150px 150px;
+    grid-template-rows: 80px 80px 80px;
+    text-align: center;
+}
+
+.grid_dir p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(72, 76, 89, 1);
+    border-radius: 10px;
+    margin: 8px;
+    text-align: center;
+}
