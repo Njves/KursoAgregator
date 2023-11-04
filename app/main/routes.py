@@ -8,4 +8,5 @@ def index():
     """
     Main page
     """
-    return render_template('main/main.html')
+    languages = ['Python', 'Golang', 'Data Science', 'Java', 'Kotlin', 'Backend', 'Unity', 'SQL', 'Fronted']
+    return render_template('main/main.html', languages=languages)

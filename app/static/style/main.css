@@ -62,7 +62,7 @@ main {
     text-align: center;
 }
 
-.grid_dir p {
+.grid_dir a {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -70,4 +70,9 @@ main {
     border-radius: 10px;
     margin: 8px;
     text-align: center;
+    text-decoration: none;
+    color: white;
+}
+.grid_dir a:hover {
+    transform: scale(1.08);
 }

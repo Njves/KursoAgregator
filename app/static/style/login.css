@@ -1,0 +1,77 @@
+body {
+  font-family: "Roboto Mono", serif;
+  background-color: #333746;
+  color: #FFFE00;
+}
+
+h1, h2, h3 {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container-buttons {
+  display: flex;
+  justify-content: space-around;
+  background-color: #333746;
+  color: white;
+  border: 0;
+}
+
+ul, ol {
+  text-align: center;
+  list-style-position: inside;
+}
+ul li, ol li {
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+ul .bosses_ol, ol .bosses_ol {
+  list-style-type: upper-roman;
+}
+ul .navigation_ul li, ol .navigation_ul li {
+  list-style-type: circle;
+}
+ul .locations_ul li, ol .locations_ul li {
+  list-style-type: disc;
+}
+ul .extra_ul li, ol .extra_ul li {
+  list-style-type: square;
+}
+
+hr.title {
+  height: 5px;
+  border-color: silver;
+  background-color: silver;
+}
+hr.subtitle {
+  height: 2px;
+  border-color: gray;
+  background-color: gray;
+}
+
+img.introduction_img {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+img.minions {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 200px;
+  height: 300px;
+}
+img.base_img {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 600px;
+  height: 400px;
+}
+img :hover {
+  text-decoration: none;
+}
+
+button {
+  margin-bottom: 10px;
+}
+
+a:link, a:visited, a:hover, a:active {
+  text-decoration: none;
+}/*# sourceMappingURL=Overlord_review_style_bs_ver.css.map */

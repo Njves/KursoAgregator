@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% block title %}
+Главная
+{% endblock %}
 {% block content %}
 <link href="{{ url_for('static', filename='style/main.css', v=1) }} }}" rel="stylesheet" crossorigin="anonymous">
 <main>
@@ -26,15 +29,9 @@
             <a href="#" class="arrow_left"><img  src="{{ url_for('static', filename='icon/chevron-left.svg') }}" width="32" alt="Предыдущие категории"></a>
             <div class="grid_center">
                 <div class="grid_dir">
-                    <p>Python</p>
-                    <p>Golang</p>
-                    <p>Data Science</p>
-                    <p>Java</p>
-                    <p>Kotlin</p>
-                    <p>Backend</p>
-                    <p>Unity</p>
-                    <p>SQL</p>
-                    <p>Fronted</p>
+                    {% for language in languages %}
+                    <a href="#">{{ language }}</a>
+                    {% endfor %}
                 </div>
             </div>
             <a href="#" class="arrow_right"><img src="{{ url_for('static', filename='icon/chevron-right.svg') }}" width="32" alt="Следующие категории"></a>

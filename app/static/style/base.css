@@ -1,5 +1,6 @@
 body {
     background-color: rgba(51, 55, 70, 1);
+    font-family: "Roboto Mono", serif;
 }
 * {
     color: white;

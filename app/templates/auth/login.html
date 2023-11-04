@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<link href="{{ url_for('static', filename='style/login.css') }}" rel="stylesheet">
+<div class="center-block">
+<form class="container-fluid" name="buttons_auth_reg" method="post" id="form">
+    <div class="row justify-content-center" style="margin-top: 40px;">
+        <button class="container-buttons" type="submit" id="authorization_btn">Войти</button>
+        <button class="container-buttons" type="submit" id="registration_btn">Регистрация</button>
+    </div>
+</form>
+<form class="container-fluid" name="feedback" method="post" id="form1">
+    <div class="row justify-content-center" style="margin-top: 10px;">
+        <div class="col-6" style="margin-top: 20px;">
+            <div class="input-group" style="margin-top: 5px;">
+                <input type="email" placeholder="E-mail" class="form-control" name="email" title="Укажите действительный адрес электронной почты">
+            </div>
+            <div class="input-group" style="margin-top: 5px;">
+                <input type="text" placeholder="Password" class="form-control" name="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,16}$" title="В пароле должны присутстовать: Заглавные и строчные латинские буквы, цифры, спецсимволы.">
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-3">
+            <div class="d-grid gap-2">
+                <input class="btn btn-light" style="margin-top: 10px;" type="submit" name="bsubmit"></input>
+            </div>
+        </div>
+    </div>
+</form>
+<form action="" class="container-fluid input-form" name="feedback2" method="post" id="form2" style="display: none;">
+    <div class="row justify-content-center" style="margin-top: 10px;">
+        <div class="col-6">
+            <div class="input-group" style="margin-top: 5px;">
+                <input type="text" placeholder="Login" class="form-control" name="reg_login" pattern="^[a-zA-Z0-9]{6,}$" title="В данном поле допускается использовать латинские буквы и цифры">
+            </div>
+            <div class="input-group" style="margin-top: 5px;">
+                <input type="email" placeholder="E-mail" class="form-control" name="reg_email" title="Укажите действительный адрес электронной почты">
+            </div>
+            <div class="input-group" style="margin-top: 5px;">
+                <input type="text" placeholder="Password" class="form-control" name="reg_password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,16}$" title="В пароле должны присутстовать: Заглавные и строчные латинские буквы, цифры, спецсимволы.">
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-3">
+            <div class="d-grid gap-2">
+                <input class="btn btn-light" style="margin-top: 10px;" type="submit" name="bbsubmit">
+            </div>
+        </div>
+    </div>
+    </div>
+</form>
+<script src="{{ url_for('static', filename='script/login.js') }}"></script>
+{% endblock %}

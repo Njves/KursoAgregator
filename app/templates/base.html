@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bootstrap demo</title>
+  <title>{% block title %} {% endblock %}</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <link href="{{ url_for('static', filename='style/base.css', v=1) }} }}" rel="stylesheet" crossorigin="anonymous">
 
@@ -11,7 +11,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark" id="navbar" style="background-color: rgba(51, 55, 70, 1);">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#"><img src="{{ url_for('static', filename='icon/icon.svg') }}"> KursoAgregator</a>
+    <a class="navbar-brand" href="#"><img src="{{ url_for('static', filename='icon/icon.svg') }}">KursoAgregator</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -21,13 +21,13 @@
       </form>
       <ul class="navbar-nav mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Главная</a>
+          <a class="nav-link active" aria-current="page" href="{{ url_for('auth.login') }}">Главная</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Отзывы о школах</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Войти</a>
+          <a class="nav-link" href="{{ url_for('auth.login') }}">Войти</a>
         </li>
       </ul>
     </div>
