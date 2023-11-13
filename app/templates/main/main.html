@@ -30,7 +30,10 @@
             <div class="grid_center">
                 <div class="grid_dir">
                     {% for language in languages %}
-                    <a href="#">{{ language }}</a>
+                    <form action="{{ url_for('main.courses') }}" method="POST">
+                        <input type="hidden" value="{{ language }}" name="filter">
+                        <button type="submit"> {{ language }}</button>
+                    </form>
                     {% endfor %}
                 </div>
             </div>

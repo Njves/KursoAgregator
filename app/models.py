@@ -1,6 +1,9 @@
 from datetime import datetime
 
-from app import db
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+
+from app import db, login_manager
 
 course_technology = db.Table('course_technology',
                              db.Column('course_id', db.Integer, db.ForeignKey('course.id', ondelete='CASCADE')),
@@ -11,7 +14,12 @@ course_review = db.Table('course_review',
                          db.Column('review_id', db.Integer, db.ForeignKey('review.id', ondelete='CASCADE')))
 
 
-class User(db.Model):
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
+
+
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(128), nullable=False)
     email = db.Column(db.String(128), nullable=False, default="")
@@ -19,11 +27,15 @@ class User(db.Model):
     date = db.Column(db.DateTime, default=datetime.utcnow, comment='date of registation')
     last_seen = db.Column(db.DateTime, default=datetime.utcnow, comment='last seen user in online')
     reviews = db.relationship('Review', backref='owner', lazy='dynamic')
-
     def __repr__(self) -> str:
         return f'User {self.id}, Username: {self.username}, email: {self.email}, date: {self.date},' \
                f' last_seen: {self.last_seen}'
 
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,6 +54,7 @@ class Course(db.Model):
     def __repr__(self) -> str:
         return f'Course {self.id}, name: {self.name}, price: {self.price}, date_start: {self.date_start},' \
                f' link: {self.link}'
+
 
 class Technology(db.Model):
     id = db.Column(db.Integer, primary_key=True)

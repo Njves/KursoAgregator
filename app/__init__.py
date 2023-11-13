@@ -2,6 +2,7 @@ from flask import Flask
 from flask_admin import Admin
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 from sqlalchemy import MetaData
 
 from config import Config
@@ -17,13 +18,14 @@ convention = {
 db = SQLAlchemy(metadata=MetaData(naming_convention=convention))
 migrate = Migrate()
 admin_app = Admin(name='KursoAgregator', template_mode='bootstrap3')
-
+login_manager = LoginManager()
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
     db.init_app(app)
     migrate.init_app(app, db)
     admin_app.init_app(app)
+    login_manager.init_app(app)
     from app.main import bp as main_bp
 
     app.register_blueprint(main_bp)
