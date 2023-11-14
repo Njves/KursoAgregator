@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+{% extends 'base.html' %}
+{% block title %}
+{{ course.name }}
+{% endblock %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/course.css') }}">
 <body>
-
+<main>
+    <h2><a href="{{ course.link }}" class="course-link">{{ course.name }}</a></h2>
+    <p>{{ course.description }}</p>
+    <h3>Технологии:</h3>
+    <div class="grid">
+        <div class="grid">
+            <div class="grid_dir">
+                {% for technology in course.technology %}
+                <p>{{ technology }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% if course.duration %}
+    <h3>Длительность:  {{ course.duration }}</h3>
+    {% endif %}
+    <h3>Цена: {{ course.price|default(0)|int }} ₽</h3>
+    {% if course.date_start %}
+    <h3>Когда можно начать:  {{ course.date_start.strftime('%d-%m-%Y') }}</h3>
+    {% endif %}
+    {% if course.authors %}
+    <h3>Авторы: {{ course.authors | join(', ') }}</h3>
+    {% endif %}
+</main>
 </body>
-</html>
+{% endblock %}
