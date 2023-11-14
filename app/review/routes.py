@@ -1,15 +1,21 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template
 
-from app import db
-from app.main import bp
-from app.models import User
+from app.review import bp
 
 
-@bp.route('/', methods=['GET'])
-def index():
+@bp.route('/<int:course_id>/reviews', methods=['GET'])
+def review(course_id):
     """
-    Main page
+    Show reviews by course id
     """
-    languages = ['Python', 'Golang', 'Data Science', 'Java',
-                 'Kotlin', 'Backend', 'Unity', 'SQL', 'Fronted']
-    return render_template('main/main.html', languages=languages)
+
+    return render_template('review/review.html')
+
+
+@bp.route('/reviews', methods=['GET'])
+def review(course_id):
+    """
+    Show reviews by course id
+    """
+
+    return render_template('review/review.html')

@@ -46,7 +46,7 @@ class Course(db.Model):
     date_start = db.Column(db.DateTime, default=datetime.utcnow)
     school_id = db.Column(db.Integer, db.ForeignKey('school.id', ondelete='CASCADE'))
     link = db.Column(db.String(256), nullable=False)
-    reviews = db.relationship('Review', backref='reviews', secondary=course_review,
+    reviews = db.relationship('Review', backref='review', secondary=course_review,
                               lazy='dynamic')
     technologies = db.relationship('Technology', backref='technologies', secondary=course_technology,
                                    lazy='dynamic')
