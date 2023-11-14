@@ -34,6 +34,10 @@ def create_app(config_class=Config):
 
     app.register_blueprint(auth_bp)
 
+    from app.review import bp as review_bp
+
+    app.register_blueprint(review_bp)
+
     return app
 
 from app import models, admin
