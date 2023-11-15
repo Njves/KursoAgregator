@@ -4,7 +4,7 @@ from app.review import bp
 
 
 @bp.route('/<int:course_id>/reviews', methods=['GET'])
-def review(course_id):
+def review_by_course_id(course_id):
     """
     Show reviews by course id
     """
@@ -13,7 +13,7 @@ def review(course_id):
 
 
 @bp.route('/reviews', methods=['GET'])
-def review(course_id):
+def all_reviews(course_id):
     """
     Show reviews by course id
     """
