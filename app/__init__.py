@@ -15,17 +15,19 @@ convention = {
     "pk": "pk_%(table_name)s"
 }
 
-db = SQLAlchemy(metadata=MetaData(naming_convention=convention))
 migrate = Migrate()
-admin_app = Admin(name='KursoAgregator', template_mode='bootstrap3')
 login_manager = LoginManager()
+admin_app = Admin(name='KursoAgregator', template_mode='bootstrap3')
+db = SQLAlchemy(metadata=MetaData(naming_convention=convention))
+
+
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
-    db.init_app(app)
     migrate.init_app(app, db)
-    admin_app.init_app(app)
     login_manager.init_app(app)
+    db.init_app(app)
+    admin_app.init_app(app)
     from app.main import bp as main_bp
 
     app.register_blueprint(main_bp)
@@ -39,5 +41,6 @@ def create_app(config_class=Config):
     app.register_blueprint(review_bp)
 
     return app
+
 
 from app import models, admin
