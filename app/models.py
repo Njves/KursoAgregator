@@ -13,6 +13,9 @@ course_review = db.Table('course_review',
                          db.Column('course_id', db.Integer, db.ForeignKey('course.id', ondelete='CASCADE')),
                          db.Column('review_id', db.Integer, db.ForeignKey('review.id', ondelete='CASCADE')))
 
+school_review = db.Table('school_review',
+                         db.Column('school_id', db.Integer, db.ForeignKey('school.id', ondelete='CASCADE')),
+                         db.Column('review_id', db.Integer, db.ForeignKey('review.id', ondelete='CASCADE')))
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -75,7 +78,15 @@ class Technology(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(128), nullable=False)
 
+    def __repr__(self):
+        return f'Технология: {self.id}, название: {self.title}'
 
 class School(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(128), nullable=False)
+    description = db.Column(db.String())
+    reviews = db.relationship('Review', backref='rev', secondary=school_review,
+                              lazy='dynamic')
+
+    def __repr__(self):
+        return f'Школа: {self.id}, название: {self.title}'
