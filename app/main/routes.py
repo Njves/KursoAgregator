@@ -2,8 +2,7 @@ from flask import render_template, request, redirect, url_for
 
 from app import db
 from app.main import bp
-from app.models import User, Course, Technology, School, course_technology
-import datetime
+from app.models import User, Course, Technology
 
 
 @bp.route('/', methods=['GET'])
@@ -11,8 +10,8 @@ def index():
     """
     Main page
     """
-    languages = ['Python', 'Golang', 'Data Science', 'Java',
-                 'Kotlin', 'Backend', 'Unity', 'SQL', 'Fronted']
+    languages = [i.title for i in Technology.query.all()]
+    languages = languages[0:9]
     return render_template('main/main.html', languages=languages)
 
 
