@@ -19,12 +19,12 @@ migrate = Migrate()
 login_manager = LoginManager()
 admin_app = Admin(name='KursoAgregator', template_mode='bootstrap3')
 db = SQLAlchemy(metadata=MetaData(naming_convention=convention))
-
+login_manager.login_view = 'auth.login'
 
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
-    migrate.init_app(app, db)
+    migrate.init_app(app, db,render_as_batch=True)
     login_manager.init_app(app)
     db.init_app(app)
     admin_app.init_app(app)

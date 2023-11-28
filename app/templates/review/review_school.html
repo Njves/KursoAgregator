@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/review.css') }}">
+<main>
+    <div class="container">
+        <h1>Отзывы о школе {{ school.title }}</h1>
+        <p class="description ">{{ school.description }}</p>
+        {% for rev in reviews %}
+
+        <div style="background-color: rgba(72, 76, 89, 1);color:white;" class="card container m-3">
+            <p>{{ rev.rating }}/5</p>
+            {{ rev.text }}
+        </div>
+        {% endfor %}
+    </div>
+</main>
+{% endblock %}

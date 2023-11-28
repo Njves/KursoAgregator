@@ -1,0 +1,8 @@
+<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>Layer 1</title>
+  <rect stroke="#000" style="vector-effect: non-scaling-stroke;" transform="translate(2.17391 -2.17391) translate(-1.40845 0) translate(-20.4225 -1.40845) translate(-54.9294 0) translate(-154.929 0) translate(-102.112 2.81689) translate(0.704223 0) translate(-2.11267 -2.81689) translate(0 -45.0702) translate(-2.11267 -72.5349) translate(-1.40845 -35.2111) translate(4.22534 -78.1687) translate(-2.81689 -100.704) translate(2.81689 105.633) translate(334 355.597) scale(1.06793 1.11464) translate(-334 -355.597) translate(462 227.597) scale(1.14436 1.13162) translate(-462 -227.597)" id="svg_1" height="128" width="128" y="227.59692" x="334" fill="url(#gradbox_fill)"/>
+  <text transform="rotate(-12.9098 60.1718 61.1531) translate(4.22534 -78.1687) translate(-2.81689 -100.704) translate(2.81689 105.633) matrix(4.08647 0 0 3.66549 -1170.02 -669.624)" stroke="#000" xml:space="preserve" text-anchor="start" font-family="'Roboto Mono'" font-size="24" stroke-width="0" id="svg_15" y="228.70066" x="285.60374" fill="#ffffff">KA</text>
+ </g>
+</svg>
