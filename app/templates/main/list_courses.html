@@ -15,7 +15,6 @@
   </div>
   <div class="container">
     <div class="row">
-      <!-- Search bar -->
       <div class="col-md-12 text-center">
         <form method="get" action="{{ url_for('main.courses') }}" class="search-form">
           <input type="text" name="search" id="search" placeholder="Введите название курса">
@@ -27,7 +26,7 @@
       <div class="col-md-3 col-6">
         <div class="sidebar">
           
-          <form method="post" action="{{ url_for('main.courses') }}" class="form_filter">
+          <form method="GET" action="{{ url_for('main.courses') }}" class="form_filter">
             {% for block_idx, (block, filters) in indexed_filter_dict %}
                 <h5>
                     <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button" data-index="{{ block_idx }}">

@@ -13,7 +13,7 @@ main h3{
 
 .grid_dir {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(1px, auto));
+    grid-template-columns: repeat(auto-fit,  minmax(100px, 15%));
     grid-template-rows: auto;
     text-align: center;
 }
