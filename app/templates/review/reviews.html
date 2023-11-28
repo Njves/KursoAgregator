@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/review.css') }}">
+<main class="container">
+    {% for school in schools %}
+    {% for course in school.courses %}
+    <div class="cards">
+        {% for review in course.reviews %}
+        {% include "review/review_item.html" %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {% endfor %}
+</main>
+{% endblock %}

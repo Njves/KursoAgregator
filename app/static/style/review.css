@@ -1,4 +1,53 @@
 card {
+    display: flex;
     background-color: rgba(72, 76, 89, 1);
     color: rgba(72, 76, 89, 1);
+}
+
+.review-item {
+    border-radius: 20px;
+    justify-content: center;
+}
+
+.review-item .card-title {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.review-item .card-hyperlink {
+    text-decoration: none;
+}
+
+.review-author {
+    padding: 8px;
+    font-size: 20px;
+}
+.author-rating {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+}
+.author-rating .rating {
+    text-align: center;
+}
+
+.title-chips {
+    display: flex;
+    justify-content: space-between;
+}
+.chips {
+    display: flex;
+    justify-content: right;
+}
+.rating-stars {
+    display: flex;
+
+}
+
+.chip {
+    background-color: rgba(62, 65, 74, 1);
+    align-self: center;
+    margin-right: 12px;
+    padding: 4px 12px 4px 12px;
+    border-radius: 20px;
 }

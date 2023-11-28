@@ -28,7 +28,6 @@ class Review(db.Model):
     text = db.Column(db.String)
     rating = db.Column(db.Float)
     date = db.Column(db.DateTime, default=datetime.utcnow)
-
     def __repr__(self) -> str:
         return f'Review {self.id}, user_id: {self.author_id}, text: {self.text}, rating: {self.rating},' \
                f' date: {self.date}'
@@ -64,7 +63,7 @@ class Course(db.Model):
     date_start = db.Column(db.DateTime, default=datetime.utcnow)
     school_id = db.Column(db.Integer, db.ForeignKey('school.id', ondelete='CASCADE'))
     link = db.Column(db.String(256), nullable=False)
-    reviews = db.relationship('Review', backref='to', secondary=course_review,
+    reviews = db.relationship('Review', backref='course', secondary=course_review,
                               lazy='dynamic')
     technologies = db.relationship('Technology', backref='tech', secondary=course_technology,
                                    lazy='dynamic')
@@ -85,8 +84,11 @@ class School(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(128), nullable=False)
     description = db.Column(db.String())
-    reviews = db.relationship('Review', backref='rev', secondary=school_review,
+    reviews = db.relationship('Review', backref='school', secondary=school_review,
                               lazy='dynamic')
+    courses = db.relationship('Course', backref='owner',
+                              lazy='dynamic')
+
 
     def __repr__(self):
         return f'Школа: {self.id}, название: {self.title}'

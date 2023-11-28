@@ -1,0 +1,11 @@
+main {
+    color: white;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.cards {
+  display: flex;
+    justify-content: center;
+    flex-direction: column;
+}

@@ -9,11 +9,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter&family=Roboto+Mono&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon/favicon.ico', v=1) }}">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark" id="navbar" style="background-color: rgba(51, 55, 70, 1);">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#"><img src="{{ url_for('static', filename='icon/icon.svg') }}">KursoAgregator</a>
+    <a class="navbar-brand" href="{{ url_for('main.courses') }}"><img src="{{ url_for('static', filename='icon/icon.svg') }}">KursoAgregator</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -26,7 +27,7 @@
           <a class="nav-link active" aria-current="page" href="{{ url_for('main.index') }}">Главная</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Отзывы о школах</a>
+          <a class="nav-link" href="{{ url_for('review.reviews') }}">Отзывы о школах</a>
         </li>
         {% if not current_user.is_authenticated %}
         <li class="nav-item">
