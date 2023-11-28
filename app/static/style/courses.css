@@ -24,7 +24,7 @@
     margin-right: 5px;
 }
 
-input[type="text"]{
+input[type="number"]{
     background-color: rgba(51, 55, 70, 1);
     color: #fff;
     border: 2px solid #fff;

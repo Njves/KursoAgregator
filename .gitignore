@@ -1,6 +1,7 @@
 .idea
 app/__pycache__
-app/main/__pycache__
+app/main/__pycache__/*
+app/main/__pycache__/
 venv
 migrations
 app/review/__pycache__/

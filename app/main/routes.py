@@ -44,6 +44,11 @@ def courses():
     unique_technologies = Technology.query.with_entities(
         Technology.title).distinct().all()
     unique_schools = School.query.with_entities(School.title).distinct().all()
+<<<<<<< HEAD
+    filter_dict = {
+        'Направления': [tech[0] for tech in unique_technologies],
+        'Школа': [school[0] for school in unique_schools],
+=======
     unique_durations = Course.query.with_entities(
         Course.duration).distinct().all()
     sorted_durations = sorted(set(
@@ -52,6 +57,7 @@ def courses():
         'Направления': [tech[0] for tech in unique_technologies],
         'Школа': [school[0] for school in unique_schools],
         'Длительность': sorted_durations,
+>>>>>>> main
     }
     indexed_filter_dict = enumerate(filter_dict.items())
     filtered_courses = filter_courses(filter_dict, selected_filters)
