@@ -3,15 +3,10 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/review.css') }}">
 <main class="container">
     {% for school in schools %}
-
     {% for course in school.courses %}
     <div class="cards">
         {% for review in course.reviews %}
-        <div style="background-color: rgba(72, 76, 89, 1);color:white;" class="card container m-3 ">
-            <h5>{{ review.text }}</h5>
-            <p>Автор: {{ review.author.username }}</p>
-            <p>{{ review.rating }}/5</p>
-        </div>
+        {% include "review/review_item.html" %}
         {% endfor %}
     </div>
     {% endfor %}
