@@ -12,8 +12,8 @@
     <div class="grid">
         <div class="grid">
             <div class="grid_dir">
-                {% for technology in course.technology %}
-                <p>{{ technology }}</p>
+                {% for technology in technologies %}
+                <p>{{ technology.title }}</p>
                 {% endfor %}
             </div>
         </div>
@@ -21,9 +21,12 @@
     {% if course.duration %}
     <h3>Длительность:  {{ course.duration }}</h3>
     {% endif %}
+    {% if course.school_id %}
+    <h3>Школа:  {{ school.title }}</h3>
+    {% endif %}
     <h3>Цена: {{ course.price|default(0)|int }} ₽</h3>
     {% if course.date_start %}
-    <h3>Когда можно начать:  {{ course.date_start.strftime('%d-%m-%Y') }}</h3>
+    <h3>Когда можно начать:  {{ course.date_start.strftime('%d.%m.%Y') }}</h3>
     {% endif %}
     {% if course.authors %}
     <h3>Авторы: {{ course.authors | join(', ') }}</h3>
