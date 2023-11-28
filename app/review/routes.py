@@ -36,9 +36,8 @@ def reviews():
     """
     Show reviews by course id
     """
-    schools = School.query.all()
-    
-    return render_template('review/reviews.html', schools=schools)
+    courses = Course.query.all()
+    return render_template('review/reviews.html', courses=courses)
 
 
 @login_required

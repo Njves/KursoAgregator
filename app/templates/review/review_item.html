@@ -1,6 +1,6 @@
 <div style="background-color: rgba(72, 76, 89, 1);color:white;" class="card container m-3 review-item">
   <div class="title-chips">
-    <h3 class="card-title">{{ school.title }}</h3>
+    <h3 class="card-title">{{ review.course[0].owner.title }}</h3>
     <div class="chips">
       <span class="chip chip-course">Курсы</span>
       <span class="chip chip-review">Отзывы</span>
@@ -9,7 +9,7 @@
   <span>{{ review.text }}</span>
 
   <h5 class="review-site">Сайт онлайн-школы - {% for course in review.course %}
-    <a class="course-hyperlink" href="{{ course.link }}">{{ course.link }}</a>
+    <a class="course-hyperlink" href="{{ review.course.link }}">{{ review.course.link }}</a>
     {% endfor %}
   </h5>
   <div class="author-rating">
