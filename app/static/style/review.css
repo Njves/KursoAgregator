@@ -18,6 +18,10 @@ card {
     text-decoration: none;
 }
 
+.review-author {
+    padding: 8px;
+    font-size: 20px;
+}
 .author-rating {
     display: flex;
     align-items: flex-end;
@@ -35,7 +39,8 @@ card {
     display: flex;
     justify-content: right;
 }
-.star {
+.rating-stars {
+    display: flex;
 
 }
 
