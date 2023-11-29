@@ -8,13 +8,41 @@ import datetime
 
 
 @bp.route('/', methods=['GET'])
-def index():
+def index(page=1):
     """
     Main page
     """
     languages = [i.title for i in Technology.query.all()]
     languages = languages[0:9]
-    return render_template('main/main.html', languages=languages)
+    return render_template('main/main.html', languages=languages, page=page)
+
+@bp.route('/<int:page>', methods=['GET'])
+def index_paged(page):
+    """
+    Main page
+    """
+    languages = [i.title for i in Technology.query.all()]
+    languages = languages[(page-1) * 9: page * 9]
+    return render_template('main/main.html', languages=languages, page=page)
+
+@bp.route('/next_page/<int:page>', methods=['GET'])
+def next_page(page):
+    """
+    Main page
+    """
+    if page+1 * 9 > len(Technology.query.all()):
+        return redirect(url_for('main.index_paged', page=page))
+    return redirect(url_for('main.index_paged', page=page+1))
+
+@bp.route('/prev_page/<int:page>', methods=['GET'])
+def prev_page(page):
+    """
+    Main page
+    """
+    print(page < 1)
+    if page-1 < 1:
+        return redirect(url_for('main.index_paged', page=page))
+    return redirect(url_for('main.index_paged', page=page-1))
 
 
 @bp.route('/delete', methods=['POST'])

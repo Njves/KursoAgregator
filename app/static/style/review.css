@@ -17,6 +17,10 @@ card {
 .review-item .card-hyperlink {
     text-decoration: none;
 }
+.author-rating {
+    width: fit-content;
+    align-self: flex-end;
+}
 
 .review-author {
     padding: 8px;
