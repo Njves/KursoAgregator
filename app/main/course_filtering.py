@@ -33,9 +33,6 @@ def filter_courses(filter_dict, selected_filters):
     if select_filter_dict["Школа"]:
         query = query.join(School).filter(
             School.title.in_(select_filter_dict["Школа"]))
-    if select_filter_dict["Длительность"]:
-        query = query.filter(Course.duration.in_(
-            select_filter_dict["Длительность"]))
     if select_filter_dict["Направления"]:
         query = query.filter(Course.technologies.any(Technology.title.in_(select_filter_dict["Направления"]))
                              )
