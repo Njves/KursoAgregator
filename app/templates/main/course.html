@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/course.css') }}">
 <body>
 <main>
-    <h2><a href="{{ course.link }}" class="course-link">{{ course.name }}</a></h2>
+    <h2><a href="{{ course.link }}" target="_blank" class="course-link">{{ course.name }}</a></h2>
     <p>{{ course.description }}</p>
     <h3>Технологии:</h3>
     <div class="grid">
@@ -22,9 +22,13 @@
     <h3>Длительность:  {{ course.duration }}</h3>
     {% endif %}
     {% if course.school_id %}
-    <h3>Школа:  {{ school.title }}</h3>
+    <h3>Школа:  <a href="{{ url_for('review.review_by_school_id', school_id=school.id) }}">{{ school.title }}</a></h3>
     {% endif %}
+    {% if course.price != 0 %}
     <h3>Цена: {{ course.price|default(0)|int }} ₽</h3>
+    {% else %}
+    <h3>Бесплатный курс</h3>
+    {% endif %}
     {% if course.date_start %}
     <h3>Когда можно начать:  {{ course.date_start.strftime('%d.%m.%Y') }}</h3>
     {% endif %}
@@ -43,10 +47,36 @@
         </div>
         <input type="hidden" name="user_id" value="{{ current_user.id }}" />
 
-        <button type="submit" class="btn btn-primary mt-3">Отправить отзыв</button>
+        <button type="submit" class="btn btn-primary mt-3" id="submit">Отправить отзыв</button>
     </form>
-
-
 </main>
+<script>
+
+    course_id = '{{ course.id }}'
+    console.log(course_id)
+    textInput = document.getElementById('textInput')
+    ratingInput = document.getElementById('ratingInput')
+    submit = document.getElementById('submit')
+
+    if(localStorage.getItem(course_id)) {
+        map = JSON.parse(localStorage.getItem(course_id))
+        textInput.value = map['text']
+        ratingInput.value = map['rating']
+    }
+    textInput.addEventListener('input', () => {
+        console.log(JSON.stringify({'text': textInput.value, 'rating': ratingInput.value}))
+        localStorage.setItem(course_id, JSON.stringify({'text': textInput.value, 'rating': ratingInput.value}))
+    })
+    ratingInput.addEventListener('input', () => {
+        localStorage.setItem(course_id, JSON.stringify({'text': textInput.value, 'rating': ratingInput.value}))
+    })
+     {% if  current_user.is_authenticated %}
+    submit.addEventListener('click', () => {
+      localStorage.removeItem(course_id)
+    })
+    {% endif %}
+
+</script>
 </body>
+
 {% endblock %}

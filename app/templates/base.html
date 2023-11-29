@@ -19,8 +19,8 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Введите направление обучения" aria-label="Search">
+      <form action="{{ url_for('main.courses') }}" class="d-flex" role="search">
+        <input class="form-control me-2" type="search" name="filter" placeholder="Введите направление обучения" aria-label="Search">
       </form>
       <ul class="navbar-nav mb-2 mb-lg-0">
         <li class="nav-item">

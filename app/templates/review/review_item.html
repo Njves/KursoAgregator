@@ -9,7 +9,7 @@
   <span>{{ review.text }}</span>
 
   <h5 class="review-site">Сайт онлайн-школы - {% for course in review.course %}
-    <a class="course-hyperlink" href="{{ review.course.link }}">{{ review.course.link }}</a>
+    <a class="course-hyperlink" href="{{ course.link }}">{{ course.link }}</a>
     {% endfor %}
   </h5>
   <div class="author-rating">

@@ -24,11 +24,13 @@ def review_by_school_id(school_id):
     """
     Show reviews by course id
     """
-    school = School.query.filter_by(id=school_id).one()
+    school = School.query.filter_by(id=school_id).first()
     if not school:
         return flask.abort(status=404)
-    reviews = school.reviews
-    return render_template('review/review_school.html', school=school, reviews=reviews)
+    reviews = [i for i in school.reviews]
+    school_rating = sum([review.rating for review in reviews]) / len(reviews)
+
+    return render_template('review/review_school.html', school=school, reviews=reviews, school_rating=school_rating)
 
 
 @bp.route('/reviews', methods=['GET'])
