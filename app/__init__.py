@@ -15,10 +15,10 @@ convention = {
     "pk": "pk_%(table_name)s"
 }
 
+db = SQLAlchemy(metadata=MetaData(naming_convention=convention))
 migrate = Migrate()
 login_manager = LoginManager()
 admin_app = Admin(name='KursoAgregator', template_mode='bootstrap3')
-db = SQLAlchemy(metadata=MetaData(naming_convention=convention))
 login_manager.login_view = 'auth.login'
 
 def create_app(config_class=Config):
@@ -40,7 +40,11 @@ def create_app(config_class=Config):
 
     app.register_blueprint(review_bp)
 
+    from app.task import bp as task_bp
+
+    app.register_blueprint(task_bp)
+
     return app
 
 
-from app import models, admin
+from app import models, admin, task
