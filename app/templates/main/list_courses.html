@@ -8,86 +8,99 @@
 
 <script src="{{ url_for('static', filename='script/filters.js') }}"></script>
 <body>
-  <div class="main">
-        <h2>Список курсов</h2>
-        <p>Используйте современную систему фильтров для выбора подходящего вам курса!</p>
+<div class="main">
+  <h2>Список курсов</h2>
+  <p>Используйте современную систему фильтров для выбора подходящего вам курса!</p>
+</div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <form method="get" action="{{ url_for('main.courses') }}" class="search-form">
+        <input type="text" name="search" id="search" placeholder="Введите название курса">
+      </form>
     </div>
-  </div>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12 text-center">
-        <form method="get" action="{{ url_for('main.courses') }}" class="search-form">
-          <input type="text" name="search" id="search" placeholder="Введите название курса">
-        </form>
-      </div>
-  <div class="container">
-    
-    <div class="row">
-      <div class="col-lg-3 col-md-3 col-6">
-        <div class="sidebar">
-          
-          <form method="GET" action="{{ url_for('main.courses') }}" class="form_filter">
-            {% for block_idx, (block, filters) in indexed_filter_dict %}
-                <h5>
-                    <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button" data-index="{{ block_idx }}">
-                    {{ block }}
-                </h5>
-                <div class="filter-container" data-index="{{ block_idx }}" style="display: block;">
-                    {% for filter in filters %}
-                        <label><input type="checkbox" class="filter-label" name="filter" value="{{ filter }}" {% if filter in select %}checked{% endif %}>{{ filter }}</label>
-                        <br>
-                        {% endfor %}
+    <div class="container">
+
+      <div class="row">
+        <div class="col-lg-3 col-md-3 col-6">
+          <div class="sidebar">
+
+            <form method="GET" action="{{ url_for('main.courses') }}" class="form_filter">
+              {% for block_idx, (block, filters) in indexed_filter_dict %}
+              <h5>
+                <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button" data-index="{{ block_idx }}">
+                {{ block }}
+              </h5>
+              <div class="filter-container" data-index="{{ block_idx }}" style="display: block;">
+                {% for filter in filters %}
+                <label><input type="checkbox" class="filter-label" name="filter" value="{{ filter }}" {% if filter in select %}checked{% endif %}>{{ filter }}</label>
+                <br>
+                {% endfor %}
+              </div>
+              {% endfor %}
+              <h5>
+                <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button" data-index="duration">
+                Длительность в часах
+              </h5>
+              <div class="filter-container row" data-index="duration" style="display: block;" >
+                <div class="col-md-3 col-6" >
+                  <label><input type="number" name="duration_from" placeholder="От:" min="0"></label>
                 </div>
-            {% endfor %}
-            <h5>
-              <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button" data-index="duration">
-              Длительность в часах
-            </h5>
-            <div class="filter-container row" data-index="duration" style="display: block;" >
-              <div class="col-md-3 col-6" >
-                <label><input type="number" name="duration_from" placeholder="От:" min="0"></label>
+                <div class="col-md-3 col-6">
+                  <label><input type="number" name="duration_to" placeholder="До:" min="0"></label>
+                </div>
               </div>
-              <div class="col-md-3 col-6">
-                <label><input type="number" name="duration_to" placeholder="До:" min="0"></label>
+              <h5>
+                <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button" data-index="price">
+                Цена
+              </h5>
+              <div class="filter-container row" data-index="price" style="display: block;">
+                <div class="col-md-6 col-6" >
+                  <label><input type="number" name="price_from" placeholder="От:"  min="0"></label>
+                </div>
+                <div class="col-md-6">
+                  <label><input type="number" name="price_to" placeholder="До:"  min="0"></label>
+                </div>
               </div>
-            </div>
-            <h5>
-              <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button" data-index="price">
-              Цена
-            </h5>
-            <div class="filter-container row" data-index="price" style="display: block;">
-              <div class="col-md-6 col-6" >
-                <label><input type="number" name="price_from" placeholder="От:"  min="0"></label>
-              </div>
-              <div class="col-md-6">
-                <label><input type="number" name="price_to" placeholder="До:"  min="0"></label>
-              </div>
-            </div>
-            <button type="submit">Применить фильтры</button>
-        </form>
-        
+              <input type="hidden" name="page" value="{{ page }}"/>
+              <button type="submit">Применить фильтры</button>
+            </form>
+
+          </div>
         </div>
-      </div>
-      
-      <!-- Main content with courses -->
-      <div class="col-md-9 col-6">
-        <div class="main-content row">
-          {% for course in courses %}
+
+        <!-- Main content with courses -->
+        <div class="col-md-9 col-6">
+          <div class="main-content row">
+            {% for course in courses %}
             {% if loop.index+1 is divisibleby(2) %}
-              <div class="courses-container col-md-6">
-                <h5><a class="nav-link" href="{{ url_for('main.course', id=course.id) }}">{{ course.name }}</a></h5>
-                  <p>{{ course.description[:50] + '...' if course.description|length > 50 else course.description }}</p>
+            <div class="courses-container col-md-6">
+              <h5><a class="nav-link" href="{{ url_for('main.course', id=course.id) }}">{{ course.name }}</a></h5>
+              <p>{{ course.description[:50] + '...' if course.description|length > 50 else course.description }}</p>
             </div>
             {% else %}
-              <div class="courses-container col-md-6">
-                <h5>{{ course.name }}</a>
-                  <p>{{ course.description }}</p>
-            {% endif %}
-          {% endfor %}
+            <div class="courses-container col-md-6">
+              <h5>{{ course.name }}</a>
+                <p>{{ course.description }}</p></h5>
+              {% endif %}
+              {% endfor %}
+              <div class="pages">
+                {% if prev_url %}
+                <a href="{{ prev_url }}">Предыдущая страница</a>
+                {% endif %}
+                <span>Страница {{ page }}</span>
+                {% if next_url %}
+                <a href="{{ next_url }}">Следующая страница</a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 </body>
 </html>
 {% endblock %}

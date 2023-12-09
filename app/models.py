@@ -62,7 +62,7 @@ class Course(db.Model):
     description = db.Column(db.String(), nullable=False)
     date_start = db.Column(db.DateTime, default=datetime.utcnow)
     school_id = db.Column(db.Integer, db.ForeignKey('school.id', ondelete='CASCADE'))
-    link = db.Column(db.String(256), nullable=False)
+    link = db.Column(db.String(256), nullable=False, unique=True)
     reviews = db.relationship('Review', backref='course', secondary=course_review,
                               lazy='dynamic')
     technologies = db.relationship('Technology', backref='tech', secondary=course_technology,

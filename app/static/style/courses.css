@@ -6,7 +6,19 @@
     color: #a8a8a8;
     border: 2px solid #fff;
 }
+.pages {
+    display: flex;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    justify-content: center;
 
+}
+.pages a{
+    margin: 10px;
+}
+.pages span{
+    margin: 10px;
+}
 .main {
     padding-left: 8%;
 }

@@ -36,4 +36,4 @@ def filter_courses(filter_dict, selected_filters):
     if select_filter_dict["Направления"]:
         query = query.filter(Course.technologies.any(Technology.title.in_(select_filter_dict["Направления"]))
                              )
-    return query.all()
+    return query

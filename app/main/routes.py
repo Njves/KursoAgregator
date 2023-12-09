@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, current_app
 
 from app import db
 from app.main import bp
@@ -12,7 +12,6 @@ def index(page=1):
     """
     Main page
     """
-    raise ValueError()
     languages = [i.title for i in Technology.query.all()]
     languages = languages[0:9]
     return render_template('main/main.html', languages=languages, page=page)
@@ -67,6 +66,7 @@ def create():
 
 @bp.route('/list_courses', methods=['GET'])
 def courses():
+    page = request.args.get('page', 1, type=int)
     selected_filters = request.form.getlist('filter')
     if not selected_filters:
         selected_filters = request.args.getlist('filter')
@@ -78,8 +78,18 @@ def courses():
         'Школа': [school[0] for school in unique_schools]
     }
     indexed_filter_dict = enumerate(filter_dict.items())
-    filtered_courses = filter_courses(filter_dict, selected_filters)
-    return render_template('main/list_courses.html', courses=filtered_courses, indexed_filter_dict=indexed_filter_dict, select=selected_filters)
+    filtered_courses = filter_courses(filter_dict, selected_filters).order_by(Course.date_start.desc())
+    filtered_courses = filtered_courses.paginate(page, current_app.config['COURSE_PER_PAGE'], False)
+    next_url = url_for('main.courses', page=filtered_courses.next_num) \
+        if filtered_courses.has_next else None
+    prev_url = url_for('main.courses', page=filtered_courses.prev_num) \
+        if filtered_courses.has_prev else None
+    return render_template('main/list_courses.html', courses=filtered_courses.items,
+                           indexed_filter_dict=indexed_filter_dict,
+                           select=selected_filters,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           page=page)
 
 
 @bp.route('/course/<int:id>')

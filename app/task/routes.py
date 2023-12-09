@@ -6,10 +6,6 @@ from flask import Response
 
 from app import db
 from app.models import Course, Technology, School
-from app.parsers.geekbrains import geekbrains_parser_courses_parallel
-from app.parsers.hexlet import hexlet_parser_courses_parallel
-from app.parsers.stepik import stepik_parser_courses_parallel
-from app.parsers.top_academy import top_academy_parser_courses_parallel
 from app.task import bp
 from config import basedir
 
@@ -20,31 +16,42 @@ def parse():
     Ручка для парсинга файлов .csv с курсами
     :return: Response(200) - если все успешно добавлено
     """
-    __parsers_names = {School.query.filter_by(title='Geekbrains').first(): 'geekbrains_test.csv', School.query.filter_by(title='Hexlet').first(): 'hexlet.csv'}
-    print('Начинаю парсинг')
+    __parsers_names = {School.query.filter_by(title='Geekbrains').first(): 'geekbrains.csv',
+                       School.query.filter_by(title='Hexlet').first(): 'hexlet.csv',
+                       School.query.filter_by(title='Stepik').first(): 'stepik.csv',
+                       School.query.filter_by(title='TopAcademy').first(): 'top-academy.csv'}
+    # print('Начинаю парсинг')
     # print('Парсинг гиков')
     # geekbrains_parser_courses_parallel()
-    print('парсинг хекслета')
-    hexlet_parser_courses_parallel()
-    print('Парсинг топ академии')
-    top_academy_parser_courses_parallel()
+    # print('парсинг хекслета')
+    # hexlet_parser_courses_parallel()
+    # print('Парсинг топ академии')
+    # top_academy_parser_courses_parallel()
     # print('Парсинг степика')
     # stepik_parser_courses_parallel()
-    print('Закончил парсинг')
+    # print('Закончил парсинг')
+    links = [course.link for course in Course.query.all()]
     for school, file_name in __parsers_names.items():
         path = pathlib.Path(basedir, 'app', 'parsers', file_name)
         with open(path, 'r', encoding='utf-8') as file:
             csv_reader = csv.DictReader(file, delimiter=',')
             for row in csv_reader:
-                link: str = row['URL']
-                name: str = row['Name']
-                description: str = row['Description']
-                duration: str = row['Duration']
-                price: int = int(''.join([i for i in row['Price'] if i.isnumeric()]))
-                technologies: list[str] = ast.literal_eval(row['Technology'])
+                if row['URL']:
+                    link: str = row['URL']
+                if row['Name']:
+                    name: str = row['Name']
+                if row['Description']:
+                    description: str = row['Description']
+                if row['Duration']:
+                    duration: str = row['Duration']
+                if row['Price']:
+                    price: int = int(''.join([i for i in row['Price'] if i.isnumeric()]))
+                if row['Technology']:
+                    technologies: list[str] = ast.literal_eval(row['Technology'])
+
                 appended_technologies: list[Technology] = []
                 # Если курса нет в бд, формируем модельку
-                if not Course.query.filter_by(link=link).first():
+                if not link in links:
                     course = Course(link=link, name=name, description=description, duration=duration, price=price,
                                     school_id=school.id)
                     for technology in technologies:
