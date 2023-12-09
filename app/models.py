@@ -21,11 +21,10 @@ school_review = db.Table('school_review',
 def load_user(user_id):
     return User.query.get(user_id)
 
-
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
-    text = db.Column(db.String)
+    text = db.Column(db.String(1024))
     rating = db.Column(db.Float)
     date = db.Column(db.DateTime, default=datetime.utcnow)
     def __repr__(self) -> str:
