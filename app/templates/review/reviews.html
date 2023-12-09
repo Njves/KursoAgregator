@@ -2,10 +2,8 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/review.css') }}">
 <main class="container">
-    {% for course in courses %}
-        {% for review in course.reviews %}
+    {% for review in reviews %}
         {% include "review/review_item.html" %}
-        {% endfor %}
     {% endfor %}
 </main>
 {% endblock %}
