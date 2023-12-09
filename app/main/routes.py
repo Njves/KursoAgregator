@@ -12,6 +12,7 @@ def index(page=1):
     """
     Main page
     """
+    raise ValueError()
     languages = [i.title for i in Technology.query.all()]
     languages = languages[0:9]
     return render_template('main/main.html', languages=languages, page=page)

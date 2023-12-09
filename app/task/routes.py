@@ -1,13 +1,15 @@
-import csv
-import os
-import pathlib
 import ast
-from datetime import datetime
+import csv
+import pathlib
 
 from flask import Response
 
 from app import db
 from app.models import Course, Technology, School
+from app.parsers.geekbrains import geekbrains_parser_courses_parallel
+from app.parsers.hexlet import hexlet_parser_courses_parallel
+from app.parsers.stepik import stepik_parser_courses_parallel
+from app.parsers.top_academy import top_academy_parser_courses_parallel
 from app.task import bp
 from config import basedir
 
@@ -19,9 +21,18 @@ def parse():
     :return: Response(200) - если все успешно добавлено
     """
     __parsers_names = {School.query.filter_by(title='Geekbrains').first(): 'geekbrains_test.csv', School.query.filter_by(title='Hexlet').first(): 'hexlet.csv'}
+    print('Начинаю парсинг')
+    # print('Парсинг гиков')
+    # geekbrains_parser_courses_parallel()
+    print('парсинг хекслета')
+    hexlet_parser_courses_parallel()
+    print('Парсинг топ академии')
+    top_academy_parser_courses_parallel()
+    # print('Парсинг степика')
+    # stepik_parser_courses_parallel()
+    print('Закончил парсинг')
     for school, file_name in __parsers_names.items():
         path = pathlib.Path(basedir, 'app', 'parsers', file_name)
-
         with open(path, 'r', encoding='utf-8') as file:
             csv_reader = csv.DictReader(file, delimiter=',')
             for row in csv_reader:
