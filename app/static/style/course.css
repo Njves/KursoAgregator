@@ -32,7 +32,24 @@ main h3{
     text-decoration: none; 
     color: white;
 }
+.pages {
+    display: flex;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    justify-content: center;
 
+}
+.pages a{
+    margin: 10px;
+}
+.pages span{
+    margin: 10px;
+}
+.cards {
+  display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
 
 .course-link:hover {
     text-decoration: underline;

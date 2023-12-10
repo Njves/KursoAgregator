@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 <link href="{{ url_for('static', filename='style/login.css') }}" rel="stylesheet">
-
+{% include "flash.html" %}
 <form class="container-fluid" name="buttons_auth_reg" method="GET">
     <div class="row justify-content-center" style="margin-top: 40px;">
-        <a class="container-buttons" href="{{ url_for('auth.register') }}" id="registration_btn">Перейти в регистрацию</a>
+        <a class="container-buttons" href="{{ url_for('auth.login') }}" id="registration_btn">Перейти в логин</a>
     </div>
 </form>
-  <style>
+    <style>
         body {
             background-color: #333746;
             color: #ffffff;
@@ -41,23 +41,29 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header">Войти</div>
+                <div class="card-header">Регистрация</div>
                 <div class="card-body">
                     {% include "flash.html" %}
-                    <form method="POST" action="{{ url_for('auth.login') }}">
+                    <form method="POST" action="{{ url_for('auth.register') }}">
                         <div class="form-group">
                             <label for="username">Username:</label>
-                            <input type="text" class="form-control" id="username" name="username" placeholder="Введите имя пользователя">
+                            <input type="text" class="form-control" name="username" id="username" placeholder="Введите имя пользователя">
                         </div>
+
                         <div class="form-group">
                             <label for="password">Password:</label>
                             <input type="password" class="form-control" id="password" name="password" placeholder="Введите пароль">
                         </div>
-                        <button type="submit" class="btn btn-primary mt-2">Войти</button>
+                        <button type="submit" class="btn btn-primary mt-2">Зарегистрироваться</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
 {% endblock %}

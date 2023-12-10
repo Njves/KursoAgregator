@@ -28,8 +28,9 @@ def review_by_school_id(school_id):
     if not school:
         return flask.abort(status=404)
     reviews = [i for i in school.reviews]
-    school_rating = sum([review.rating for review in reviews]) / len(reviews)
-
+    school_rating = 0
+    if reviews:
+        school_rating = sum([review.rating for review in reviews]) / len(reviews)
     return render_template('review/review_school.html', school=school, reviews=reviews, school_rating=school_rating)
 
 
@@ -51,12 +52,17 @@ def write_review(course_id):
     text = request.form.get('text')
     rating = request.form.get('rating')
     user_id = request.form.get('user_id')
+    if len(text) > 1024:
+        return redirect(request.referrer)
     if not user_id:
         return redirect(url_for('auth.login', next=request.referrer))
     if text and rating:
         review = Review(text=text, rating=rating, author_id=user_id)
         course = Course.query.filter_by(id=course_id).one()
         course.reviews.append(review)
+        school = School.query.filter_by(id=course.school_id).first()
+        if school:
+            school.reviews.append(review)
         db.session.add(review)
         db.session.add(course)
         db.session.commit()

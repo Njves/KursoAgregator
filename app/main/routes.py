@@ -94,7 +94,18 @@ def courses():
 
 @bp.route('/course/<int:id>')
 def course(id):
-    data = Course.query.get(id)
+    page = request.args.get('page', 1, type=int)
+    data: Course = Course.query.get(id)
     technologies = data.technologies.all()
     school = School.query.get(data.school_id)
-    return render_template('main/course.html', course=data, technologies=technologies, school=school)
+    reviews = data.reviews.paginate(1, current_app.config['COURSE_PER_PAGE'], False)
+    next_url = url_for('main.course', id=data.id ,page=reviews.next_num) \
+        if reviews.has_next else None
+    prev_url = url_for('main.course', id=data.id, page=reviews.prev_num) \
+        if reviews.has_prev else None
+    return render_template('main/course.html', course=data, technologies=technologies,
+                           school=school,
+                           reviews=reviews.items,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           page=page)
