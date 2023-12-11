@@ -98,6 +98,7 @@ def course(id):
     data: Course = Course.query.get(id)
     technologies = data.technologies.all()
     school = School.query.get(data.school_id)
+
     reviews = data.reviews.paginate(1, current_app.config['COURSE_PER_PAGE'], False)
     next_url = url_for('main.course', id=data.id ,page=reviews.next_num) \
         if reviews.has_next else None
