@@ -8,4 +8,4 @@ class Config(object):
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'zxczxc'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    COURSE_PER_PAGE = 25
+    COURSE_PER_PAGE = 26

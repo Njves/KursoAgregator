@@ -62,7 +62,7 @@ main {
     text-align: center;
 }
 
-.grid_dir form {
+.grid_dir a {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -73,7 +73,7 @@ main {
     text-decoration: none;
     color: white;
 }
-button, input[type="submit"], input[type="reset"] {
+a, input[type="submit"], input[type="reset"] {
 	background: none;
 	color: inherit;
 	border: none;
@@ -82,6 +82,6 @@ button, input[type="submit"], input[type="reset"] {
 	cursor: pointer;
 	outline: inherit;
 }
-.grid_dir form:hover {
+.grid_dir a:hover {
     transform: scale(1.08);
 }
