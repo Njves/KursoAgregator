@@ -97,4 +97,4 @@ def course(id):
     data = Course.query.get(id)
     technologies = data.technologies.all()
     school = School.query.get(data.school_id)
-    return render_template('main/course.html', course=data, technologies=technologies, school=school)
+    return render_template('main/course.html', course=data, duration=int(data.duration), technologies=technologies, school=school)

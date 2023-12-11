@@ -47,26 +47,28 @@ def process_course(course):
 
     :param course: URL курса, который нужно обработать.
     :return: Кортеж с информацией о курсе в следующем формате:
-        (URL, Name, Authors, Description, Duration, Price, [])
+        (URL, Name, Description, Duration, Price, [])
         Если информация не найдена, возвращает None.
     """
     hdr = {'User-Agent': 'Chrome/118.0.0.0'}
     request = requests.get(course, headers=hdr)
-    soup = BeautifulSoup(request.text, 'html.parser')
-    name = get_name(soup)
-    description = get_description(soup)
-    price = '3900 ₽'
-    authors = ['Hexlet']
-    duration = get_duration(soup)
-    return (request.url, name, authors,
-            description, duration, price, [])
+    if request.status_code == 200:
+        soup = BeautifulSoup(request.text, 'html.parser')
+        name = get_name(soup)
+        description = get_description(soup)
+        price = '3900 ₽'
+        duration = get_duration(soup)
+        return (request.url, name,
+                description, duration, price, [])
+    return None
 
 
 def hexlet_parser_courses_parallel() -> None:
     """
-    Парсит с сайта hexlet ссылку на курс, имя, описание автора, цену,
+    Парсит с сайта hexlet ссылку на курс, имя, описание, цену,
     длительность и технологии курса, после чего сохраняет в csv файл.
     """
+    print('Начался парсинг https://ru.hexlet.io')
     courses = []
     hdr = {'User-Agent': 'Chrome/119.0.0.0'}
     catalogs = {'https://ru.hexlet.io/courses-python': 'Python',
@@ -80,7 +82,7 @@ def hexlet_parser_courses_parallel() -> None:
         for link in links:
             if link['href'].startswith("/courses"):
                 course_links.append(link['href'])
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        with concurrent.futures.ThreadPoolExecutor(5) as executor:
             futures = []
             for course in course_links:
                 url_cour = 'https://ru.hexlet.io/' + course
@@ -93,13 +95,14 @@ def hexlet_parser_courses_parallel() -> None:
                 if future.result() is not None:
                     courses.append(future.result())
                     courses[-1][-1].append(technology)
-    csv_columns = ['URL', 'Name', "Authors",
+    csv_columns = ['URL', 'Name',
                    "Description", 'Duration', 'Price', 'Technology']
     with open("app/parsers/hexlet.csv", 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(csv_columns)
         for course in courses:
             writer.writerow(course)
+    print('Закончился парсинг https://ru.hexlet.io')
 
 
 if __name__ == "__main__":

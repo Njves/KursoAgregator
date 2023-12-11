@@ -28,31 +28,6 @@ def get_price(driver: webdriver.Chrome):
     return None
 
 
-def get_authors(driver: webdriver.Chrome):
-    """
-    Функция извлекает информацию об авторах курса с веб-страницы.
-    :param driver: Объект веб-драйвера Chrome.
-    :return: Список авторов, если есть на странице, иначе возвращает None.
-    Если авторы не найдены, функция возвращает "Null".
-    """
-    try:
-        authors = driver.find_elements(
-            "css selector", 'div.author-widget__content a')
-        authors = [author.text.strip() for author in authors]
-    except common.exceptions.NoSuchElementException:
-        authors = []
-    if authors:
-        return authors
-    try:
-        authors = driver.find_elements(
-            "css selector", 'div.course-index__aside-authors span.user-avatar__name')
-        authors = [author.text.strip() for author in authors]
-        return authors
-    except common.exceptions.NoSuchElementException:
-        pass
-    return "Null"
-
-
 def get_duration(driver: webdriver.Chrome):
     """
     Функция находит информацию о продолжительности курса на странице.
@@ -74,7 +49,7 @@ def process_course(course):
     Функция обрабатывает курс, извлекая информацию о нем с веб-страницы.
     :param course: URL курса, который нужно обработать.
     :return: Кортеж с информацией о курсе в следующем формате:
-        (URL, Name, Authors, Description, Duration, Price, [])
+        (URL, Name, Description, Duration, Price, [])
         Если информация не найдена, возвращает None.
     """
     options = webdriver.ChromeOptions()
@@ -89,11 +64,12 @@ def process_course(course):
     description = soup.find("meta", attrs={'name': 'description'})
     driver.get(course)
     price = get_price(driver)
-    authors = get_authors(driver)
     duration = get_duration(driver)
-    if price is None or duration is None or not description or not authors:
+    if price is None or duration is None or not description:
         return None
-    return (course, name["content"], authors,
+    if not name["content"] or not description["content"]:
+        return None
+    return (course, name["content"],
             description["content"], duration, price, [])
 
 
@@ -102,6 +78,7 @@ def stepik_parser_courses_parallel() -> None:
     Парсит со степика ссылку на курс, имя, описание автора, цену,
     длительность и технологии курса, после чего сохраняет в csv файл.
     """
+    print('Начался парсинг https://stepik.org')
     catalogs = {42: "SQL", 153: "Python", 237: "JavaScript", 54: "Kotlin",
                 57: "Linux", 156: "Golang", 62: "Java", 236:
                 "Аналитика данных", 226: "Machine Learning",
@@ -131,7 +108,7 @@ def stepik_parser_courses_parallel() -> None:
                     courses.append(future.result())
                     courses[-1][-1].append(technology)
 
-    csv_columns = ['URL', 'Name', "Authors",
+    csv_columns = ['URL', 'Name',
                    "Description", 'Duration', 'Price', 'Technology']
     try:
         with open("app/parsers/stepik.csv", 'w', newline='', encoding='utf-8') as csvfile:
@@ -141,7 +118,11 @@ def stepik_parser_courses_parallel() -> None:
                 writer.writerow(course)
     except IOError:
         print("Ошибка при записи в файл CSV")
+    print('Закончился парсинг https://stepik.org')
 
 
 if __name__ == "__main__":
+    import time
+    s = time.time()
     stepik_parser_courses_parallel()
+    print(time.time() - s)

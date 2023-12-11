@@ -7,6 +7,7 @@ from flask import Response
 from app import db
 from app.models import Course, Technology, School
 from app.task import bp
+from app.task.validate import validate_data
 from config import basedir
 
 
@@ -16,18 +17,15 @@ def parse():
     Ручка для парсинга файлов .csv с курсами
     :return: Response(200) - если все успешно добавлено
     """
+    validate_data()
     __parsers_names = {School.query.filter_by(title='Geekbrains').first(): 'geekbrains.csv',
                        School.query.filter_by(title='Hexlet').first(): 'hexlet.csv',
                        School.query.filter_by(title='Stepik').first(): 'stepik.csv',
                        School.query.filter_by(title='TopAcademy').first(): 'top-academy.csv'}
     # print('Начинаю парсинг')
-    # print('Парсинг гиков')
     # geekbrains_parser_courses_parallel()
-    # print('парсинг хекслета')
     # hexlet_parser_courses_parallel()
-    # print('Парсинг топ академии')
     # top_academy_parser_courses_parallel()
-    # print('Парсинг степика')
     # stepik_parser_courses_parallel()
     # print('Закончил парсинг')
     links = [course.link for course in Course.query.all()]

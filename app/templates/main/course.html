@@ -18,8 +18,14 @@
             </div>
         </div>
     </div>
-    {% if course.duration %}
-    <h3>Длительность:  {{ course.duration }}</h3>
+    {% if duration  > 168 * 30 %}
+        <h3>Длительность: {{ duration // (168 * 30) }} месяцев</h3>
+    {% elif duration > 168 %}
+        <h3>Длительность: {{ duration  // 168 }} недель</h3>
+    {% elif duration  > 24 %}
+        <h3>Длительность: {{ duration // 24 }} дней</h3>
+    {% else %}
+        <h3>Длительность: {{ duration  }} часов</h3>
     {% endif %}
     {% if course.school_id %}
     <h3>Школа:  <a href="{{ url_for('review.review_by_school_id', school_id=school.id) }}">{{ school.title }}</a></h3>
@@ -31,9 +37,6 @@
     {% endif %}
     {% if course.date_start %}
     <h3>Когда можно начать:  {{ course.date_start.strftime('%d.%m.%Y') }}</h3>
-    {% endif %}
-    {% if course.authors %}
-    <h3>Авторы: {{ course.authors | join(', ') }}</h3>
     {% endif %}
     {% include "flash.html" %}
     <form action="{{ url_for('review.write_review', course_id=course.id) }}" method="POST">

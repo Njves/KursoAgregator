@@ -1,5 +1,5 @@
 from flask import request
-from sqlalchemy import Integer, func
+from sqlalchemy import Integer, cast, func
 from app.models import Course, School, Technology
 
 
@@ -21,11 +21,9 @@ def filter_courses(filter_dict, selected_filters):
     if price_to:
         query = query.filter(Course.price <= float(price_to))
     if duration_from:
-        query = query.filter(func.cast(func.replace(func.replace(
-            Course.duration, ' часов', ''), ' часа', ''), Integer) >= int(duration_from))
+        query = query.filter(cast(Course.duration, Integer) >= int(duration_from))
     if duration_to:
-        query = query.filter(func.cast(func.replace(func.replace(
-            Course.duration, ' часов', ''), ' часа', ''), Integer) <= int(duration_to))
+        query = query.filter(cast(Course.duration, Integer) <= int(duration_to))
     if search_str:
         query = query.filter(Course.name.ilike(f'%{search_str}%'))
         # у нас sqlite ?
