@@ -28,7 +28,8 @@ def get_description(soup):
     :return: Описание курса, извлеченное из объекта BeautifulSoup.
     """
     description = soup.find("meta", attrs={'name': 'description'})
-    return description["content"]
+    if description:
+        return description["content"]
 
 
 def get_price(soup):
@@ -48,16 +49,6 @@ def get_price(soup):
             price = price_tag.get_text().strip().removeprefix("от ")
     return price
 
-
-def get_authors(soup: webdriver.Chrome):
-    """
-    Функция извлекает авторов курса из объекта BeautifulSoup.
-    :param soup: Объект BeautifulSoup, представляющий HTML-контент страницы.
-    :return: Авторы курса, извлеченная из объекта BeautifulSoup.
-    """
-    teacher_cards = soup.find_all(class_="teacher-card-new__title")
-    authors = [card.get_text(strip=True) for card in teacher_cards]
-    return authors
 
 
 def get_duration(soup):
@@ -107,7 +98,7 @@ def process_course(course):
     Функция обрабатывает курс, извлекая информацию о нем с веб-страницы.
     :param course: URL курса, который нужно обработать.
     :return: Кортеж с информацией о курсе в следующем формате:
-        (URL, Name, Authors, Description, Duration, Price, [])
+        (URL, Name, Description, Duration, Price, [])
         Если информация не найдена, возвращает None.
     """
     hdr = {'User-Agent': 'Chrome/118.0.0.0'}
@@ -116,12 +107,11 @@ def process_course(course):
     name = get_name(soup)
     description = get_description(soup)
     price = get_price(soup)
-    authors = get_authors(soup)
     duration = get_duration(soup)
     technology = get_technology(soup)
     if not technology:
-        return
-    return (request.url, name, authors,
+        return None
+    return (request.url, name,
             description, duration, price, technology)
 
 
@@ -130,6 +120,7 @@ def geekbrains_parser_courses_parallel():
     Парсит с сайта https://gb.ru/ ссылку на курс, имя, описание автора, цену,
     длительность и технологии курса, после чего сохраняет в csv файл.
     """
+    print('Начался парсинг https://gb.ru/')
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
     options.add_argument('--log-level=3')
@@ -155,7 +146,7 @@ def geekbrains_parser_courses_parallel():
                 if result not in courses:
                     if result not in [course[0] for course in courses]:
                         courses.append(result)
-    csv_columns = ['URL', 'Name', "Authors",
+    csv_columns = ['URL', 'Name',
                    "Description", 'Duration', 'Price', 'Technology']
     driver.quit()
     with open("app/parsers/geekbrains.csv", 'w', newline='', encoding='utf-8') as csvfile:
@@ -163,6 +154,7 @@ def geekbrains_parser_courses_parallel():
         writer.writerow(csv_columns)
         for course in courses:
             writer.writerow(course)
+    print('Закончился парсинг https://gb.ru/')
 
 
 if __name__ == "__main__":

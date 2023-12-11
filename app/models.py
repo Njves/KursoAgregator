@@ -21,11 +21,10 @@ school_review = db.Table('school_review',
 def load_user(user_id):
     return User.query.get(user_id)
 
-
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
-    text = db.Column(db.String)
+    text = db.Column(db.String(1024))
     rating = db.Column(db.Float)
     date = db.Column(db.DateTime, default=datetime.utcnow)
     def __repr__(self) -> str:
@@ -62,7 +61,7 @@ class Course(db.Model):
     description = db.Column(db.String(), nullable=False)
     date_start = db.Column(db.DateTime, default=datetime.utcnow)
     school_id = db.Column(db.Integer, db.ForeignKey('school.id', ondelete='CASCADE'))
-    link = db.Column(db.String(256), nullable=False)
+    link = db.Column(db.String(256), nullable=False, unique=True)
     reviews = db.relationship('Review', backref='course', secondary=course_review,
                               lazy='dynamic')
     technologies = db.relationship('Technology', backref='tech', secondary=course_technology,

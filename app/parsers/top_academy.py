@@ -48,32 +48,61 @@ def get_duration(soup):
     return duration
 
 
+def get_technology(soup, name):
+    """
+    Функция извлекает технологии курса из объекта BeautifulSoup.
+    :param soup: Объект BeautifulSoup, представляющий HTML-контент страницы.
+    :return: Технологии курса, извлеченная из объекта BeautifulSoup.
+    """
+    tags = ['SQL', 'Python', 'JavaScript', 'Kotlin', 'Linux',
+            'Golang', 'Java', 'Аналитика данных', 'ML',
+            'Веб-разработка', 'Тестирование', 'C#', '1C']
+    matching_tags = []
+    text = soup.find('div', class_='result-year__block')
+    if text is None:
+        text = soup.find('div', class_='custom-educ-prog__block')
+    if text is None:
+        return
+    text = text.get_text()
+    for tag in tags:
+        if tag.lower() in text.lower() or tag.lower() in name.lower():
+            if tag == 'ML':
+                matching_tags.append('Machine Learning')
+            else:
+                matching_tags.append(tag)
+    return matching_tags
+
+
 def process_course(course):
     """
     Функция обрабатывает курс, извлекая информацию о нем с веб-страницы.
     :param course: URL курса, который нужно обработать.
     :return: Кортеж с информацией о курсе в следующем формате:
-        (URL, Name, Authors, Description, Duration, Price, [])
+        (URL, Name, Description, Duration, Price, [])
         Если информация не найдена, возвращает None.
     """
     hdr = {'User-Agent': 'Chrome/118.0.0.0'}
     request = requests.get(course, headers=hdr)
-    soup = BeautifulSoup(request.text, 'html.parser')
-    name = get_name(soup)
-    description = get_description(soup)
-    price = get_price(soup)
-    authors = ['Компьютерная Академия TOP']
-    duration = get_duration(soup)
-    technology = None
-    return (request.url, name, authors,
-            description, duration, price, technology)
+    if request.status_code == 200:
+        soup = BeautifulSoup(request.text, 'html.parser')
+        name = get_name(soup)
+        description = get_description(soup)
+        price = get_price(soup)
+        duration = get_duration(soup)
+        technology = get_technology(soup, name)
+        if not technology:
+            return None
+        return (request.url, name,
+                description, duration, price, technology)
+    return None
 
 
 def top_academy_parser_courses_parallel() -> None:
     """
-    Парсит с сайта топ академии ссылку на курс, имя, описание автора, цену,
+    Парсит с сайта топ академии ссылку на курс, имя, описание, цену,
     длительность и технологии курса, после чего сохраняет в csv файл.
     """
+    print('Начался парсинг https://online.top-academy.ru')
     courses = []
     hdr = {'User-Agent': 'Chrome/119.0.0.0'}
     url = 'https://online.top-academy.ru/it_courses_for_adults'
@@ -90,13 +119,14 @@ def top_academy_parser_courses_parallel() -> None:
         for future in concurrent.futures.as_completed(futures):
             if future.result() is not None:
                 courses.append(future.result())
-    csv_columns = ['URL', 'Name', "Authors",
+    csv_columns = ['URL', 'Name',
                    "Description", 'Duration', 'Price', 'Technology']
     with open("app/parsers/top-academy.csv", 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(csv_columns)
         for course in courses:
             writer.writerow(course)
+    print('Закончился парсинг https://online.top-academy.ru')
 
 
 if __name__ == "__main__":
