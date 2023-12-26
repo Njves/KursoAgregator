@@ -7,3 +7,6 @@ migrations
 app/review/__pycache__/
 app/auth/__pycache__/
 __pycache__
+**.pytest_cache
+app/__init__
+logs/

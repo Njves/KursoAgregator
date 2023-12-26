@@ -5,7 +5,7 @@ import pathlib
 from app import db
 from app.models import Course, Technology
 from app.task import bp
-__parsers_names = ['geekbrains_test.csv']
+__parsers_names = ['geekbrains.csv', 'hexlet.csv', 'top-academy.csv']
 
 @bp.route('/parse', ['POST'])
 def parse():

@@ -47,16 +47,15 @@ def create_app(config_class=Config):
 
     app.register_blueprint(task_bp)
 
-    if not os.path.exists('logs'):
+    if not app.debug and not os.path.exists('logs'):
         os.mkdir('logs')
-    file_handler = RotatingFileHandler('logs/kursoagregator.log', maxBytes=10240,
-                                       backupCount=10)
-    file_handler.setFormatter(logging.Formatter(
-        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
-    file_handler.setLevel(logging.ERROR)
-    app.logger.addHandler(file_handler)
-
-
+    if not app.debug:
+        file_handler = RotatingFileHandler('logs/kursoagregator.log', maxBytes=10240,
+                                           backupCount=10)
+        file_handler.setFormatter(logging.Formatter(
+            '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+        file_handler.setLevel(logging.ERROR)
+        app.logger.addHandler(file_handler)
     return app
 
 

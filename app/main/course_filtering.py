@@ -26,7 +26,6 @@ def filter_courses(filter_dict, selected_filters):
         query = query.filter(cast(Course.duration, Integer) <= int(duration_to))
     if search_str:
         query = query.filter(Course.name.ilike(f'%{search_str}%'))
-        # у нас sqlite ?
         # query = query.filter(func.similarity(Course.name, search_str) > 0.5)
     if select_filter_dict["Школа"]:
         query = query.join(School).filter(

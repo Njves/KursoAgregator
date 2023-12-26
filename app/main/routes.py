@@ -109,4 +109,5 @@ def course(id):
                            reviews=reviews.items,
                            next_url=next_url,
                            prev_url=prev_url,
-                           page=page)
+                           page=page,
+                           duration=data.duration)

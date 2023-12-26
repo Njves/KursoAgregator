@@ -17,8 +17,7 @@ def login():
         user = User.query.filter_by(username=request.form.get('username')).first()
         if user is None:
             flash('Пользователь не найден')
-            redirect(url_for('auth.login'))
-            return
+            return redirect(url_for('auth.login'))
         user.check_password(str(request.form.get('password')))
         if user.check_password(request.form.get('password')):
             login_user(user, remember=True)
