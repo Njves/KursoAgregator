@@ -10,19 +10,36 @@ from app.task.validate import validate_data
 from config import basedir
 
 
+def init(app):
+    with app.app_context():
+        schools = [School(title='Geekbrains'), School(title='Hexlet'), School(title='Stepik'),
+                   School(title='TopAcademy')]
+        [db.session.add(school) for school in schools]
+        db.session.commit()
+
+
+def get_school(app):
+    with app.app_context():
+        return School.query.filter_by(title='Geekbrains').first(), School.query.filter_by(title='Hexlet'),\
+            School.query.filter_by(title='Stepik').first(),\
+            School.query.filter_by(title='TopAcademy').first()
+
 @bp.route('/parse', methods=['POST', ])
 def parse():
     """
     Ручка для парсинга файлов .csv с курсами
     :return: Response(200) - если все успешно добавлено
     """
+    init(current_app)
     current_app.logger.info('Запросили парсинг')
     # validate_data()
-
+    if all(get_school(current_app)):
+        init(current_app)
     __parsers_names = {School.query.filter_by(title='Geekbrains').first(): 'geekbrains.csv',
                        School.query.filter_by(title='Hexlet').first(): 'hexlet.csv',
                        School.query.filter_by(title='Stepik').first(): 'stepik.csv',
                        School.query.filter_by(title='TopAcademy').first(): 'top-academy.csv'}
+
     # print('Начинаю парсинг')
     # geekbrains_parser_courses_parallel()
     # hexlet_parser_courses_parallel()
