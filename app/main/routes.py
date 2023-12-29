@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for, current_app
 
-from app import db
+from app import db, cache
 from app.main import bp
 from app.main.course_filtering import filter_courses
 from app.models import User, Course, Technology, School, course_technology
@@ -65,6 +65,7 @@ def create():
 
 
 @bp.route('/list_courses', methods=['GET'])
+@cache.cached(timeout=86100)
 def courses():
     page = request.args.get('page', 1, type=int)
     selected_filters = request.form.getlist('filter')

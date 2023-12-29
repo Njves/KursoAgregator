@@ -2,8 +2,7 @@ import ast
 import csv
 import pathlib
 
-from flask import Response
-
+from flask import Response, current_app
 from app import db
 from app.models import Course, Technology, School
 from app.task import bp
@@ -17,7 +16,9 @@ def parse():
     Ручка для парсинга файлов .csv с курсами
     :return: Response(200) - если все успешно добавлено
     """
+    current_app.logger.info('Запросили парсинг')
     validate_data()
+
     __parsers_names = {School.query.filter_by(title='Geekbrains').first(): 'geekbrains.csv',
                        School.query.filter_by(title='Hexlet').first(): 'hexlet.csv',
                        School.query.filter_by(title='Stepik').first(): 'stepik.csv',
@@ -34,19 +35,20 @@ def parse():
         with open(path, 'r', encoding='utf-8') as file:
             csv_reader = csv.DictReader(file, delimiter=',')
             for row in csv_reader:
-                if row['URL']:
+                if row.get('URL'):
                     link: str = row['URL']
-                if row['Name']:
+                else:
+                    continue
+                if row.get('Name'):
                     name: str = row['Name']
-                if row['Description']:
+                if row.get('Description'):
                     description: str = row['Description']
-                if row['Duration']:
+                if row.get('Duration'):
                     duration: str = row['Duration']
-                if row['Price']:
+                if row.get('Price'):
                     price: int = int(''.join([i for i in row['Price'] if i.isnumeric()]))
-                if row['Technology']:
+                if row.get('Technology'):
                     technologies: list[str] = ast.literal_eval(row['Technology'])
-
                 appended_technologies: list[Technology] = []
                 # Если курса нет в бд, формируем модельку
                 if not link in links:

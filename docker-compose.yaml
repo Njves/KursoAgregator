@@ -9,14 +9,16 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin
       POSTGRES_DB: server
-
     ports:
       - "5432:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready", "-d", "rkis"]
+  cache:
+    image: redis:latest
+    ports:
+      - "6379:6379"
   backend:
-    backend:
-      build: .
+    build: .
     environment:
       SECRET_KEY: some-secret
       DB: postgresql://njves:ViX8tAxl4Gn67J8kplD9uA8gAC451IM2@dpg-clpv7phjvg7s73e1e8m0-a.frankfurt-postgres.render.com/kursoagregator
