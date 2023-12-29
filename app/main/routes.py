@@ -8,6 +8,7 @@ import datetime
 
 
 @bp.route('/', methods=['GET'])
+@cache.cached(timeout=86100)
 def index(page=1):
     """
     Main page
@@ -17,6 +18,7 @@ def index(page=1):
     return render_template('main/main.html', languages=languages, page=page)
 
 @bp.route('/<int:page>', methods=['GET'])
+@cache.cached(timeout=86100)
 def index_paged(page):
     """
     Main page
@@ -26,6 +28,7 @@ def index_paged(page):
     return render_template('main/main.html', languages=languages, page=page)
 
 @bp.route('/next_page/<int:page>', methods=['GET'])
+@cache.cached(timeout=86100)
 def next_page(page):
     """
     Main page
@@ -35,6 +38,7 @@ def next_page(page):
     return redirect(url_for('main.index_paged', page=page+1))
 
 @bp.route('/prev_page/<int:page>', methods=['GET'])
+@cache.cached(timeout=86100)
 def prev_page(page):
     """
     Main page

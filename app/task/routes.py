@@ -17,7 +17,7 @@ def parse():
     :return: Response(200) - если все успешно добавлено
     """
     current_app.logger.info('Запросили парсинг')
-    validate_data()
+    # validate_data()
 
     __parsers_names = {School.query.filter_by(title='Geekbrains').first(): 'geekbrains.csv',
                        School.query.filter_by(title='Hexlet').first(): 'hexlet.csv',
@@ -35,17 +35,17 @@ def parse():
         with open(path, 'r', encoding='utf-8') as file:
             csv_reader = csv.DictReader(file, delimiter=',')
             for row in csv_reader:
-                if row.get('URL'):
+                if row.get('URL', False):
                     link: str = row['URL']
                 else:
                     continue
-                if row.get('Name'):
+                if row.get('Name', False):
                     name: str = row['Name']
-                if row.get('Description'):
+                if row.get('Description', False):
                     description: str = row['Description']
-                if row.get('Duration'):
+                if row.get('Duration', False):
                     duration: str = row['Duration']
-                if row.get('Price'):
+                if row.get('Price', False):
                     price: int = int(''.join([i for i in row['Price'] if i.isnumeric()]))
                 if row.get('Technology'):
                     technologies: list[str] = ast.literal_eval(row['Technology'])

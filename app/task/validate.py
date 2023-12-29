@@ -16,7 +16,7 @@ def validate_data():
                 if any(not val for val in row.values()):
                     print(row)
                     continue
-                if row['Duration']:
+                if row.get('Duration', False):
                     duration: int = int(''.join([i for i in row['Duration'] if i.isnumeric()]))
                     if 'дн' in row['Duration']:
                         duration *= 24
@@ -25,7 +25,7 @@ def validate_data():
                     if 'мес' in row['Duration']:
                         duration *= 168 * 30
                     row['Duration'] = duration
-                if row['Price']:
+                if row.get('Price', False):
                     row['Price']: int = int(''.join([i for i in row['Price'] if i.isnumeric()]))
                 data.append(row)
         with open(path, 'w', encoding='utf-8') as file:
