@@ -26,7 +26,10 @@ services:
     depends_on:
       - backend
   backend:
-    build: .
+    build:
+      context: ./
+      dockerfile: ./backend/Dockerfile
+
     env_file:
       - .env-development
     environment:

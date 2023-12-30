@@ -8,6 +8,7 @@ import datetime
 
 
 @bp.route('/', methods=['GET'])
+@bp.route('/index', methods=['GET'])
 @cache.cached(timeout=86100)
 def index(page=1):
     """
