@@ -9,7 +9,7 @@ class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'zxczxc'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     COURSE_PER_PAGE = 26
-    CACHE_TYPE = 'SimpleCache'  # Flask-Caching related configs
-    CACHE_REDIS_HOST = 'localhost'
+    CACHE_TYPE = os.environ.get('CACHE_TYPE')
+    CACHE_REDIS_HOST = os.environ.get('CACHE_HOST')
     CACHE_REDIS_PORT = 6379
     CACHE_DEFAULT_TIMEOUT = 300
