@@ -17,15 +17,26 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
+  nginx:
+    build: ./nginx
+    volumes:
+      - ./app/static:/var/www/html/static
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
   backend:
     build: .
     environment:
       SECRET_KEY: some-secret
-      DB: postgresql://njves:ViX8tAxl4Gn67J8kplD9uA8gAC451IM2@dpg-clpv7phjvg7s73e1e8m0-a.frankfurt-postgres.render.com/kursoagregator
-    ports:
-      - 5000:5000
+      DB: postgresql://admin:admin@database:5432/server
+      CACHE_TYPE: SimpleCache
+      CACHE_HOST: localhost
+    expose:
+      - 5000
     depends_on:
       database:
         condition: service_healthy
+
 volumes:
   server:
