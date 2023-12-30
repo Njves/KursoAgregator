@@ -27,6 +27,8 @@ services:
       - backend
   backend:
     build: .
+    env_file:
+      -
     environment:
       SECRET_KEY: some-secret
       DB: postgresql://admin:admin@database:5432/server

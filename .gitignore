@@ -10,3 +10,4 @@ __pycache__
 **.pytest_cache
 app/__init__
 logs/
+.env-prod
