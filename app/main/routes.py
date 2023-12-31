@@ -7,43 +7,18 @@ from app.models import User, Course, Technology, School
 
 
 @bp.route('/', methods=['GET'])
-
-def index(page=1):
+def index():
     """
     Main page
     """
-    languages = [i.title for i in Technology.query.all()]
-    languages = languages[0:9]
-    return render_template('main/main.html', languages=languages, page=page)
-
-@bp.route('/<int:page>', methods=['GET'])
-def index_paged(page):
-    """
-    Main page
-    """
-    languages = [i.title for i in Technology.query.all()]
-    languages = languages[(page-1) * 9: page * 9]
-    return render_template('main/main.html', languages=languages, page=page)
-
-@bp.route('/next_page/<int:page>', methods=['GET'])
-def next_page(page):
-    """
-    Main page
-    """
-    if page+1 * 9 > len(Technology.query.all()):
-        return redirect(url_for('main.index_paged', page=page))
-    return redirect(url_for('main.index_paged', page=page+1))
-
-@bp.route('/prev_page/<int:page>', methods=['GET'])
-def prev_page(page):
-    """
-    Main page
-    """
-    print(page < 1)
-    if page-1 < 1:
-        return redirect(url_for('main.index_paged', page=page))
-    return redirect(url_for('main.index_paged', page=page-1))
-
+    page = request.args.get('page', 1, type=int)
+    languages = Technology.query.paginate(page, current_app.config['TECHNOLOGY_PER_PAGE'], False)
+    next_url = url_for('main.index', page=languages.next_num) \
+        if languages.has_next else None
+    prev_url = url_for('main.index', page=languages.prev_num) \
+        if languages.has_prev else None
+    languages = [i.title for i in languages.items]
+    return render_template('main/main.html', languages=languages, page=page, next_url=next_url, prev_url=prev_url)
 
 @bp.route('/delete', methods=['POST'])
 def delete():
@@ -102,7 +77,7 @@ def course(id):
     technologies = data.technologies.all()
     school = School.query.get(data.school_id)
 
-    reviews = data.reviews.paginate(1, current_app.config['COURSE_PER_PAGE'], False)
+    reviews = data.reviews.paginate(page, current_app.config['COURSE_PER_PAGE'], False)
     next_url = url_for('main.course', id=data.id ,page=reviews.next_num) \
         if reviews.has_next else None
     prev_url = url_for('main.course', id=data.id, page=reviews.prev_num) \

@@ -20,12 +20,20 @@ services:
   nginx:
     build: ./nginx
     volumes:
-      - ./app/static:/var/www/html/static
+      - ./app/static:/var/www/html/static:ro
+      - ./certbot/www:/var/www/certbot/:ro
     ports:
       - "80:80"
+      - "443:443"
     depends_on:
       - backend
     command: [nginx-debug, '-g', 'daemon off;']
+    restart: always
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
   backend:
     build:
       context: ./

@@ -26,7 +26,9 @@
     <div class="toggler">
         <h2>Направления</h2>
         <div class="grid">
-            <a href="{{ url_for('main.prev_page', page=page) }}" class="arrow_left"><img  src="{{ url_for('static', filename='icon/chevron-left.svg') }}" width="32" alt="Предыдущие категории"></a>
+            {% if prev_url %}
+            <a href="{{ prev_url }}" class="arrow_left"><img src="{{ url_for('static', filename='icon/chevron-left.svg') }}" width="32" alt="Предыдущие категории"></a>
+            {% endif %}
             <div class="grid_center">
                 <div class="grid_dir">
                     {% for language in languages %}
@@ -34,7 +36,9 @@
                     {% endfor %}
                 </div>
             </div>
-            <a href="{{ url_for('main.next_page', page=page) }}" class="arrow_right"><img src="{{ url_for('static', filename='icon/chevron-right.svg') }}" width="32" alt="Следующие категории"></a>
+            {% if next_url %}
+            <a href="{{ next_url }}" class="arrow_right"><img src="{{ url_for('static', filename='icon/chevron-right.svg') }}" width="32" alt="Следующие категории"></a>
+            {% endif %}
         </div>
     </div>
 </main>
