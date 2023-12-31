@@ -29,11 +29,6 @@ services:
       - backend
     command: [nginx-debug, '-g', 'daemon off;']
     restart: always
-  certbot:
-    image: certbot/certbot:latest
-    volumes:
-      - ./certbot/www/:/var/www/certbot/:rw
-      - ./certbot/conf/:/etc/letsencrypt/:rw
   backend:
     build:
       context: ./
