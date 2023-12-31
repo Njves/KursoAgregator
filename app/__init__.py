@@ -24,7 +24,6 @@ migrate = Migrate()
 login_manager = LoginManager()
 admin_app = Admin(name='KursoAgregator', template_mode='bootstrap3')
 login_manager.login_view = 'auth.login'
-cache = Cache()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -33,7 +32,7 @@ def create_app(config_class=Config):
     login_manager.init_app(app)
     db.init_app(app)
     admin_app.init_app(app)
-    cache.init_app(app)
+
     from app.main import bp as main_bp
 
     app.register_blueprint(main_bp)

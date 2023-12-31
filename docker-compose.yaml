@@ -12,7 +12,7 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready", "-d", "rkis"]
+      test: ["CMD-SHELL", "pg_isready", "-d", "server"]
   cache:
     image: redis:latest
     ports:
@@ -25,11 +25,11 @@ services:
       - "80:80"
     depends_on:
       - backend
+    command: [nginx-debug, '-g', 'daemon off;']
   backend:
     build:
       context: ./
       dockerfile: ./backend/Dockerfile
-
     env_file:
       - .env-development
     environment:
@@ -37,7 +37,6 @@ services:
       DB: postgresql://admin:admin@database:5432/server
       CACHE_TYPE: SimpleCache
       CACHE_HOST: localhost
-
     expose:
       - 5000
     depends_on:

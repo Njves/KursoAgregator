@@ -1,15 +1,13 @@
 from flask import render_template, request, redirect, url_for, current_app
 
-from app import db, cache
+from app import db
 from app.main import bp
 from app.main.course_filtering import filter_courses
-from app.models import User, Course, Technology, School, course_technology
-import datetime
+from app.models import User, Course, Technology, School
 
 
 @bp.route('/', methods=['GET'])
-@bp.route('/index', methods=['GET'])
-@cache.cached(timeout=86100)
+
 def index(page=1):
     """
     Main page
@@ -19,7 +17,6 @@ def index(page=1):
     return render_template('main/main.html', languages=languages, page=page)
 
 @bp.route('/<int:page>', methods=['GET'])
-@cache.cached(timeout=86100)
 def index_paged(page):
     """
     Main page
@@ -29,7 +26,6 @@ def index_paged(page):
     return render_template('main/main.html', languages=languages, page=page)
 
 @bp.route('/next_page/<int:page>', methods=['GET'])
-@cache.cached(timeout=86100)
 def next_page(page):
     """
     Main page
@@ -39,7 +35,6 @@ def next_page(page):
     return redirect(url_for('main.index_paged', page=page+1))
 
 @bp.route('/prev_page/<int:page>', methods=['GET'])
-@cache.cached(timeout=86100)
 def prev_page(page):
     """
     Main page
@@ -70,12 +65,14 @@ def create():
 
 
 @bp.route('/list_courses', methods=['GET'])
-@cache.cached(timeout=86100)
 def courses():
     page = request.args.get('page', 1, type=int)
     selected_filters = request.form.getlist('filter')
+    current_app.logger.debug(selected_filters)
     if not selected_filters:
         selected_filters = request.args.getlist('filter')
+    print(selected_filters)
+    current_app.logger.debug(selected_filters)
     unique_technologies = Technology.query.with_entities(
         Technology.title).distinct().all()
     unique_schools = School.query.with_entities(School.title).distinct().all()
