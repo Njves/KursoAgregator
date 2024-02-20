@@ -1,7 +1,14 @@
-body {
-    background-color: rgba(51, 55, 70, 1);
-    font-family: 'Roboto Mono', monospace;
+:root {
+    --background-color: #EAEAEA;
+    --text-color: #000000;
 }
-* {
-    color: white;
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.dark-theme {
+    --background-color: #333746;
+    --text-color: #ffffff;
 }

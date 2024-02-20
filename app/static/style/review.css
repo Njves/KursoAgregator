@@ -1,7 +1,22 @@
+:root {
+    --background-color: #EAEAEA;
+    --text-color: #000000;
+    --text-color-chip: #ffffff;
+    --border-color: 2px solid #000000;
+    --background-color-chip:#4E59FD;
+}
+
+.dark-theme {
+    --background-color:#484c59;
+    --text-color: #ffffff;
+    --background-color-chip:#484c59;
+}
+
 card {
     display: flex;
-    background-color: rgba(72, 76, 89, 1);
+    background-color: var(--background-color-grid-dir);
     color: rgba(72, 76, 89, 1);
+    --border-color: 2px solid #ffffff;
 }
 
 .review-item {
@@ -17,6 +32,7 @@ card {
 .review-item .card-hyperlink {
     text-decoration: none;
 }
+
 .author-rating {
     width: fit-content;
     align-self: flex-end;
@@ -26,11 +42,13 @@ card {
     padding: 8px;
     font-size: 20px;
 }
+
 .author-rating {
     display: flex;
     align-items: flex-end;
     flex-direction: column;
 }
+
 .author-rating .rating {
     text-align: center;
 }
@@ -39,19 +57,41 @@ card {
     display: flex;
     justify-content: space-between;
 }
+
 .chips {
     display: flex;
     justify-content: right;
 }
+
 .rating-stars {
     display: flex;
 
 }
 
 .chip {
-    background-color: rgba(62, 65, 74, 1);
+    color: var(--text-color-chip);
+    background-color: var(--background-color-chip);
     align-self: center;
     margin-right: 12px;
     padding: 4px 12px 4px 12px;
     border-radius: 20px;
+}
+
+.school_rating.bad {
+    color: #ff0000;
+}
+
+.school_rating.medium {
+    color: #ff6e00;
+    font-weight: bold;
+}
+
+.school_rating.good {
+    color: #429824;
+}
+
+.card.container.m-3.review-item {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: var(--border-color)
 }

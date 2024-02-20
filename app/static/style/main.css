@@ -1,10 +1,25 @@
-.main  {
+:root {
+    --background-color-grid:#4E59FD;
+    --color-arrow: #4E59FD;
+    --color-text-item: #ffffff;
+    --color-book: hue-rotate(180deg); 
+}
+
+.dark-theme {
+    --background-color-grid:#484c59;
+    --color-arrow: #ffffff;
+    --color-text-item: #ffffff;
+    --color-book: hue-rotate(0deg);
+}
+
+.main {
     display: flex;
     justify-content: center;
     align-content: center;
     flex-wrap: wrap;
     margin-top: 50px;
 }
+
 main {
     display: flex;
     justify-content: center;
@@ -12,6 +27,7 @@ main {
     flex-wrap: wrap;
     flex-direction: column;
 }
+
 .right {
     display: grid;
     grid-template-columns: 100px 100px;
@@ -19,33 +35,40 @@ main {
     margin-left: 50px;
     width: 250px;
 }
+
 .left {
     margin-right: 50px;
     width: 250px;
 }
-.left > p {
+
+.left>p {
     margin-bottom: 0;
     font-size: 15px;
 }
-.arrow_left, .arrow_right{
+
+.arrow_left,
+.arrow_right {
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin: 25px 8px 25px 8px;
-    background-color: rgba(62, 67, 84, 1);
+    background-color: var(--color-arrow);
     border-radius: 10px;
 }
+
 .grid {
     display: flex;
     justify-content: center;
 }
+
 .toggler {
     margin-top: 5%;
-     display: flex;
+    display: flex;
     justify-content: center;
     flex-direction: column;
     align-content: center;
 }
+
 .grid_center {
     display: flex;
     justify-content: center;
@@ -55,6 +78,7 @@ main {
     display: flex;
     justify-content: center;
 }
+
 .grid_dir {
     display: grid;
     grid-template-columns: 150px 150px 150px;
@@ -66,22 +90,29 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(72, 76, 89, 1);
+    background-color: var(--background-color-grid);
     border-radius: 10px;
     margin: 8px;
     text-align: center;
     text-decoration: none;
-    color: white;
+    color: var(--color-text-item);
 }
-a, input[type="submit"], input[type="reset"] {
-	background: none;
-	color: inherit;
-	border: none;
-	padding: 0;
-	font: inherit;
-	cursor: pointer;
-	outline: inherit;
+
+a,
+input[type="submit"],
+input[type="reset"] {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
 }
+
 .grid_dir a:hover {
     transform: scale(1.08);
+}
+.svg-icon {
+    filter: var(--color-book);
 }
