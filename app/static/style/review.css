@@ -7,15 +7,16 @@
 }
 
 .dark-theme {
-    --background-color:#484c59;
+    --background-color:#333746;
     --text-color: #ffffff;
-    --background-color-chip:#484c59;
+    --background-color-chip:#3e414a;
+    --background-color-card-container: #484c59;
 }
 
 card {
     display: flex;
     background-color: var(--background-color-grid-dir);
-    color: rgba(72, 76, 89, 1);
+    color: var(--background-color-grid-dir);
     --border-color: 2px solid #ffffff;
 }
 
@@ -91,7 +92,7 @@ card {
 }
 
 .card.container.m-3.review-item {
-    background-color: var(--background-color);
+    background-color: var(--background-color-card-container);
     color: var(--text-color);
     border: var(--border-color)
 }

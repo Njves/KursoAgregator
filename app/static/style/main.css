@@ -2,14 +2,14 @@
     --background-color-grid:#4E59FD;
     --color-arrow: #4E59FD;
     --color-text-item: #ffffff;
-    --color-book: hue-rotate(180deg); 
+    --color-book: invert(0%);
 }
 
 .dark-theme {
     --background-color-grid:#484c59;
-    --color-arrow: #ffffff;
+    --color-arrow: #3e4354;
     --color-text-item: #ffffff;
-    --color-book: hue-rotate(0deg);
+    --color-book: invert(100%);
 }
 
 .main {
