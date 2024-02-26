@@ -1,5 +1,16 @@
+:root {
+    --background-color: #EAEAEA;
+    --background-color-grid-dir:#4E59FD;
+    --text-color-tag: #ffffff;
+}
+
+.dark-theme {
+    --background-color:#333746;
+    --background-color-grid-dir: #484c59;
+    --text-color-tag: #ffffff;
+}
 body {
-    background-color: rgba(51, 55, 70, 1);
+    background-color: var(--background-color);
 }
 main {
     padding-left: 8%;
@@ -22,15 +33,15 @@ main h3{
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(72, 76, 89, 1);
+    background-color: var(--background-color-grid-dir);
     border-radius: 120px;
     margin: 8px;
     text-align: center;
-    color: white;
+    color: var(--text-color-tag);
 }
 .course-link {
     text-decoration: none; 
-    color: white;
+    color: var(--text-color);
 }
 .pages {
     display: flex;
