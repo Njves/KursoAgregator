@@ -1,7 +1,32 @@
-body {
-    background-color: rgba(51, 55, 70, 1);
-    font-family: 'Roboto Mono', monospace;
+:root {
+    --background-color: #EAEAEA;
+    --text-color: #000000;
+    --background-toggle-theme: #4E59FD;
 }
-* {
-    color: white;
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.dark-theme {
+    --background-color: #333746;
+    --text-color: #ffffff;
+    --background-toggle-theme: #484c59;
+}
+.theme-toggle-circle {
+    position: fixed;
+    right: 1%;
+    bottom: 25px;
+    width: 40px; /* Размер круга */
+    height: 40px;
+    border-radius: 50%; /* Делаем круглый */
+    background-color: var(--background-toggle-theme);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#theme-toggle {
+    width: 25px;
 }

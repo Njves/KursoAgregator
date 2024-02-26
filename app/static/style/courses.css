@@ -1,10 +1,28 @@
+:root {
+    --background-color: #EAEAEA;
+    --text-color: #000000;
+    --text-color-search: #a8a8a8;
+    --border-color: 2px solid #000000;
+    --background-color-container:#4E59FD;
+    --color-arrow: invert(100%);
+}
+
+.dark-theme {
+    --background-color:#333746;
+    --text-color: #ffffff;
+    --text-color-search: #a8a8a8;
+    --border-color: 2px solid #ffffff;
+    --background-color-container:#484c59;
+    --color-arrow: invert(0%);
+}
+
 #search {
     width: 80%;
     padding: 5px;
     border-radius: 40px;
-    background-color: rgba(51, 55, 70, 1);
-    color: #a8a8a8;
-    border: 2px solid #fff;
+    background-color: var(--background-color);
+    color: var(--text-color-search);
+    border: var(--border-color);
 }
 .pages {
     display: flex;
@@ -13,6 +31,7 @@
     justify-content: center;
 
 }
+
 .pages a{
     margin: 10px;
 }
@@ -29,6 +48,7 @@
 
 .img_button {
     padding-right: 5px;
+    filter: var(--color-arrow);
 }
 
 .filter-container input[type="checkbox"] {
@@ -37,9 +57,9 @@
 }
 
 input[type="number"]{
-    background-color: rgba(51, 55, 70, 1);
-    color: #fff;
-    border: 2px solid #fff;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: var(--border-color);
     border-radius: 10px;
     width: 100px;
     margin-right: 5px;
@@ -47,14 +67,14 @@ input[type="number"]{
 }
 
 .form_filter button[type="submit"]{
-    background-color: rgba(51, 55, 70, 1);
-    color: #fff;
-    border: 2px solid #fff;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: var(--border-color);
     border-radius: 10px;
 }
 
 .courses-container {
-    background-color: #484C59;
+    background-color: var(--background-color-container);
     color: white;
     padding-top: 20px;
     padding-bottom: 20px;

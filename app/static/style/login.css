@@ -1,7 +1,18 @@
+:root {
+  --background-color: #EAEAEA;
+  --text-color: #000000;
+  --border-color: 2px solid #000000;
+}
+
 body {
   font-family: "Roboto Mono", serif;
-  background-color: #333746;
-  color: #FFFE00;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.dark-theme {
+  --background-color: #333746;
+  --text-color: #ffffff;
 }
 
 h1, h2, h3 {
@@ -11,8 +22,8 @@ h1, h2, h3 {
 .container-buttons {
   display: flex;
   justify-content: space-around;
-  background-color: #333746;
-  color: white;
+  background-color: var(--background-color);
+  color: var(--text-color);
   border: 0;
 }
 
@@ -75,3 +86,24 @@ button {
 a:link, a:visited, a:hover, a:active {
   text-decoration: none;
 }/*# sourceMappingURL=Overlord_review_style_bs_ver.css.map */
+
+.card {
+  background-color: #495057;
+  border: 1px solid #495057;
+  color: #ffffff;
+}
+
+.card-header {
+  background-color: #343a40;
+  color: #ffffff;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}

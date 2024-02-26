@@ -1,29 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/review.css') }}">
-<style>
-    {% if school_rating <= 2 %}
-    .school_rating {
-        color: #ff0000;
-    }
-    {% endif %}
-    {% if  2 < school_rating <= 3.9 %}
-    .school_rating {
-        color: #ff6e00;
-        font-weight: bold;
-    }
-    {% endif %}
-    {% if  school_rating > 3.9 %}
-    .school_rating {
-        color: #429824;
-    }
-    {% endif %}
-</style>
 <main>
     <div class="container">
         <h1>Отзывы о школе {{ school.title }}</h1>
         {% if school_rating != 0 %}
-        <h2 >Рейтинг школы: <span class="school_rating">{{ school_rating }}</span>/5</h2>
+        <h2 >Рейтинг школы: <span class="school_rating {% if school_rating <= 2 %}bad{% elif 2 < school_rating <= 3.9 %}medium{% else %}good{% endif %}">{{ school_rating }}</span>/5</h2>
         {% else %}
         <h2 >Рейтинг школы: <span class="school_rating">Неизвестно</span></h2>
         {% endif %}
