@@ -78,6 +78,10 @@
             <div class="courses-container col-md-6">
               <h5><a class="nav-link" href="{{ url_for('main.course', id=course.id) }}">{{ course.name }}</a></h5>
               <p>{{ course.description[:50] + '...' if course.description|length > 50 else course.description }}</p>
+              <form method="POST" action="{{ url_for('main.add_favorite') }}">
+                <input type="hidden" name="course_id" value="{{ course.id }}">
+                <button class="btn btn-secondary w-50">Добавить в избранное</button>
+              </form>
             </div>
             {% else %}
             <div class="courses-container col-md-6">

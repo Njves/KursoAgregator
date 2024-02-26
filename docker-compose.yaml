@@ -21,7 +21,6 @@ services:
     build: ./nginx
     volumes:
       - ./app/static:/var/www/html/static:ro
-      - ./certbot/www:/var/www/certbot/:ro
     ports:
       - "80:80"
       - "443:443"

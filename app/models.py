@@ -1,8 +1,10 @@
 from datetime import datetime
+from time import time
 
+from flask import current_app
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-
+import jwt
 from app import db, login_manager
 
 course_technology = db.Table('course_technology',
@@ -41,6 +43,22 @@ class User(db.Model, UserMixin):
     last_seen = db.Column(db.DateTime, default=datetime.utcnow, comment='last seen user in online')
     reviews = db.relationship('Review', backref='author', lazy='dynamic')
 
+    def get_reset_password_token(self, expires_in=600):
+        return jwt.encode(
+            {'reset_password': self.id, 'exp': time() + expires_in},
+            current_app.config['SECRET_KEY'], algorithm='HS256')
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            account = User.query.get(jwt.decode(token, current_app.config['SECRET_KEY'],
+                                                   algorithms=['HS256'])['reset_password'])
+            return account
+        except jwt.InvalidTokenError as e:
+            print(e)
+            # TODO: Добавить логирование
+            return
+
     def __repr__(self) -> str:
         return f'User {self.id}, Username: {self.username}, email: {self.email}, date: {self.date},' \
                f' last_seen: {self.last_seen}'
@@ -70,6 +88,9 @@ class Course(db.Model):
     def __repr__(self) -> str:
         return f'Course {self.id}, name: {self.name}, price: {self.price}, date_start: {self.date_start},' \
                f' link: {self.link}'
+
+    def to_dict(self):
+        return {'id': self.id, 'name': self.name,  'price': self.price, 'date_start': self.date_start, 'link': self.link}
 
 
 class Technology(db.Model):

@@ -12,5 +12,11 @@ class Config(object):
     TECHNOLOGY_PER_PAGE = 9
     CACHE_TYPE = os.environ.get('CACHE_TYPE')
     CACHE_REDIS_HOST = os.environ.get('CACHE_HOST')
+    ADMINS = ['mrpostik@gmail.com']
+    MAIL_SERVER = os.environ.get('MAIL_SERVER')
+    MAIL_PORT = os.environ.get('MAIL_PORT')
+    MAIL_USE_TLS = 1
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     CACHE_REDIS_PORT = 6379
     CACHE_DEFAULT_TIMEOUT = 300

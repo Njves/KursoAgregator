@@ -1,10 +1,13 @@
+import flask
 from flask import render_template, request, redirect, url_for, current_app
+from flask_login import login_required
 
 from app import db
 from app.main import bp
 from app.main.course_filtering import filter_courses
 from app.models import User, Course, Technology, School
 
+SESSION_KEY = 'favorite'
 
 @bp.route('/', methods=['GET'])
 def index():
@@ -28,6 +31,27 @@ def delete():
         db.session.commit()
     return redirect(url_for('main.list'))
 
+@login_required
+@bp.route('/favorite', methods=['POST'])
+def add_favorite():
+    course_id = request.form.get('course_id')
+
+    if SESSION_KEY in flask.session:
+        courses_ids = flask.session[SESSION_KEY]
+        courses_ids.append(course_id)
+        flask.session[SESSION_KEY] = courses_ids
+    else:
+        flask.session[SESSION_KEY] = [course_id]
+    return redirect(request.referrer)
+
+@bp.route('/favorite', methods=['GET'])
+def get_favorite():
+    course_ids = flask.session.get(SESSION_KEY) if flask.session.get(SESSION_KEY) else []
+    courses = []
+    print(course_ids)
+    for i in course_ids:
+        courses.append(Course.query.get(i))
+    return render_template('main/favorite.html', courses=courses)
 
 @bp.route('/create', methods=['POST'])
 def create():
