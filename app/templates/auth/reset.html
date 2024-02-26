@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container justify-content-center ">
+    <h2>Измените пароль</h2>
+    <form method="POST" action="{{ url_for('auth.update_password', token=token) }}">
+        <div class="mb-3">
+            <label for="password" class="form-label">Новый пароль</label>
+            <input type="password" id="password" class="form-control" name="password">
+        </div>
+        <button type="submit" class="btn btn-primary">Обновить пароль</button>
+    </form>
+    {% include 'flash.html' %}
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container justify-content-center ">
+    <h2>Восстановление аккаунта</h2>
+    <form method="POST" action="{{ url_for('auth.forgot_send') }}">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Электронная почта</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp">
+        </div>
+        <button id="buttonSendEmail" type="submit" class="btn btn-primary">Отправить письмо</button>
+    </form>
+    {% include 'flash.html' %}
+</div>
+{% endblock %}
