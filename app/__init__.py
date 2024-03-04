@@ -52,6 +52,10 @@ def create_app(config_class=Config):
 
     app.register_blueprint(task_bp)
 
+    from app.user import bp as user_bp
+
+    app.register_blueprint(user_bp)
+
     if not app.debug and not os.path.exists('logs'):
         os.mkdir('logs')
     if not app.debug:

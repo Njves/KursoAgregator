@@ -2,7 +2,7 @@
     --background-color: #EAEAEA;
     --text-color: #000000;
     --text-color-chip: #ffffff;
-    --border-color: 2px solid #000000;
+    --border-color: 1px solid rgba(0, 0, 0, 0.5);
     --background-color-chip:#4E59FD;
 }
 
@@ -17,7 +17,7 @@ card {
     display: flex;
     background-color: var(--background-color-grid-dir);
     color: var(--background-color-grid-dir);
-    --border-color: 2px solid #ffffff;
+    --border-color: 1px solid rgba(0, 0, 0, 0.5);
 }
 
 .review-item {
