@@ -46,18 +46,33 @@
         <input type="hidden" name="user_id" value="{{ current_user.id }}" />
         <button type="submit" class="btn btn-primary mt-3" id="submit">Отправить отзыв</button>
     </form>
+    <h3>Похожие курсы</h3>
+    <div class="container-fluid d-flex flex-wrap justify-content-between p-0 mt-2 mb-2">
+        {% for similar in similars %}
+        <div class="card mt-2 mb-2" style="width: 18rem; cursor: pointer">
+            <a href="{{ url_for('main.course', id=similar.id) }}" style="text-decoration: none !important; color: black">
+                <div class="card-body">
+                    <h5 class="card-title">{{ similar.name }}</h5>
+                    <p class="card-text">{{ ' '.join(similar.description.split()[0:20] + ['...']) }}</p>
+                    <a href="{{ similar.link }}" target="_blank" class="btn btn-primary">Перейти</a>
+                </div>
+            </a>
+        </div>
+
+        {% endfor %}
+    </div>
     {% for review in reviews %}
-        {% include "review/review_item.html" %}
+    {% include "review/review_item.html" %}
     {% endfor %}
     <div class="pages">
-                {% if prev_url %}
-                <a href="{{ prev_url }}">Предыдущая страница</a>
-                {% endif %}
-                <span>Страница {{ page }}</span>
-                {% if next_url %}
-                <a href="{{ next_url }}">Следующая страница</a>
-                {% endif %}
-              </div>
+        {% if prev_url %}
+        <a href="{{ prev_url }}">Предыдущая страница</a>
+        {% endif %}
+        <span>Страница {{ page }}</span>
+        {% if next_url %}
+        <a href="{{ next_url }}">Следующая страница</a>
+        {% endif %}
+    </div>
 
 </main>
 <script>
@@ -80,9 +95,9 @@
     ratingInput.addEventListener('input', () => {
         localStorage.setItem(course_id, JSON.stringify({'text': textInput.value, 'rating': ratingInput.value}))
     })
-     {% if  current_user.is_authenticated %}
+    {% if  current_user.is_authenticated %}
     submit.addEventListener('click', () => {
-      localStorage.removeItem(course_id)
+        localStorage.removeItem(course_id)
     })
     {% endif %}
 

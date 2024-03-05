@@ -24,7 +24,7 @@ def login():
             next = flask.request.args.get('next')
             return flask.redirect(next or flask.url_for('main.index'))
         flash('Пароль неправильный')
-        return redirect('auth.login')
+        return redirect(url_for('auth.login'))
     return render_template('auth/login.html')
 
 
