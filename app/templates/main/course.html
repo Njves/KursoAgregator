@@ -47,14 +47,13 @@
         <button type="submit" class="btn btn-primary mt-3" id="submit">Отправить отзыв</button>
     </form>
     <h3>Похожие курсы</h3>
-    <div class="container-fluid d-flex flex-wrap justify-content-between p-0 mt-2 mb-2">
+    <div class="container-fluid">
         {% for similar in similars %}
         <div class="card mt-2 mb-2" style="width: 18rem; cursor: pointer">
-            <a href="{{ url_for('main.course', id=similar.id) }}" style="text-decoration: none !important; color: black">
+            <a href="{{ url_for('main.course', id=similar.id) }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ similar.name }}</h5>
                     <p class="card-text">{{ ' '.join(similar.description.split()[0:20] + ['...']) }}</p>
-                    <a href="{{ similar.link }}" target="_blank" class="btn btn-primary">Перейти</a>
                 </div>
             </a>
         </div>
