@@ -65,6 +65,7 @@ def create():
 
 @bp.route('/list_courses', methods=['GET'])
 def courses():
+    favs = flask.session.get(SESSION_KEY) if flask.session.get(SESSION_KEY) else []
     page = request.args.get('page', 1, type=int)
     selected_filters = request.form.getlist('filter')
     current_app.logger.debug(selected_filters)
@@ -89,6 +90,7 @@ def courses():
     return render_template('main/list_courses.html', courses=filtered_courses.items,
                            indexed_filter_dict=indexed_filter_dict,
                            select=selected_filters,
+                           favs=favs,
                            next_url=next_url,
                            prev_url=prev_url,
                            page=page)
