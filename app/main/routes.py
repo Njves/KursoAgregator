@@ -1,8 +1,10 @@
 import flask
 from flask import render_template, request, redirect, url_for, current_app
 from flask_login import login_required
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import linear_kernel
 
-from app import db
+from app import db, similar
 from app.main import bp
 from app.main.course_filtering import filter_courses
 from app.models import User, Course, Technology, School
@@ -103,6 +105,26 @@ def course(id):
     technologies = data.technologies.all()
     school = School.query.get(data.school_id)
 
+    source = Course.query.get(id)
+    if not source:
+        return []
+    technology_ids = [tech.id for tech in source.technologies]
+
+    courses = Course.query.filter(Course.technologies.any(Technology.id.in_(technology_ids))).all()
+    courses.insert(0, source)
+    course_map = {}
+    course_map[0] = source
+    for index, course in enumerate(courses):
+        course_map[index + 1] = course
+    tfidf_vectorizer = TfidfVectorizer()
+    tfidf_matrix = tfidf_vectorizer.fit_transform([course.description for course in courses])
+
+    cosine_similarities = linear_kernel(tfidf_matrix, tfidf_matrix)
+    similar_scores = cosine_similarities[0]
+
+    similar_course_indices = similar_scores.argsort()[::-1][0::11]
+    similars = [course_map[index] for index in similar_course_indices if not index == 0]
+    print(len(similars))
     reviews = data.reviews.paginate(page, current_app.config['COURSE_PER_PAGE'], False)
     next_url = url_for('main.course', id=data.id ,page=reviews.next_num) \
         if reviews.has_next else None
@@ -114,4 +136,5 @@ def course(id):
                            next_url=next_url,
                            prev_url=prev_url,
                            page=page,
-                           duration=data.duration)
+                           duration=data.duration,
+                           similars=similars)

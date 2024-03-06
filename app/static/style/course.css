@@ -56,11 +56,30 @@ main h3{
 .pages span{
     margin: 10px;
 }
-.cards {
-  display: flex;
-    justify-content: center;
-    flex-direction: column;
+.card {
+    display: flex;
+    background-color: var(--background-color-grid-dir);
 }
+
+.card a {
+    color: var(--text-color-tag);
+    text-decoration: none;
+}
+
+.container-fluid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 0;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.container-fluid > * {
+    margin-right: 10px; /* Отступ между дочерними элементами */
+    margin-bottom: 10px; /* Отступ между строками */
+}
+
 
 .course-link:hover {
     text-decoration: underline;
