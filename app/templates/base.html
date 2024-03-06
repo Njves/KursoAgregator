@@ -34,6 +34,11 @@
           <a class="nav-link" href="{{ url_for('main.get_favorite') }}">Избранное</a>
         </li>
         {% endif %}
+        {% if current_user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('user_bp.profile_view', user_id=current_user.id) }}">Личный кабинет</a>
+        </li>
+        {% endif %}
         {% if not current_user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('auth.login') }}">Войти</a>

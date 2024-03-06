@@ -1,0 +1,19 @@
+:root {
+    --background-color: #EAEAEA;
+    --text-color: #000000;
+    --text-color-chip: #ffffff;
+    --border-color: 1px solid rgba(0, 0, 0, 0.5);
+    --background-color-chip:#4E59FD;
+}
+
+.dark-theme {
+    --background-color:#333746;
+    --text-color: #ffffff;
+    --background-color-chip:#3e414a;
+    --background-color-card-container: #484c59;
+}
+
+
+#passwordHelpBlock, #passwordRepeatHelpBlock {
+    color: var(--text-color);
+}

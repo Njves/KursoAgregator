@@ -77,8 +77,6 @@ def update_password(token):
         return redirect(url_for('auth.login'))
     return redirect(url_for('auth.reset_password', token=token))
 
-
-
 @bp.route("/logout")
 @login_required
 def logout():
