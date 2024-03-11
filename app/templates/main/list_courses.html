@@ -81,7 +81,6 @@
             <div class="main-content row">
               {% for course in courses %}
               {% if loop.index+1 is divisibleby(2) %}
-
               <div class="courses-container col-md-6 position-relative">
                 <h5><a class="nav-link" href="{{ url_for('main.course', id=course.id) }}">{{ course.name }}</a></h5>
                 <p>{{ course.description[:50] + '...' if course.description|length > 50 else course.description }}</p>

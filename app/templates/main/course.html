@@ -21,7 +21,6 @@
             </div>
         </div>
     </div>
-
     {% if course.school_id %}
     <h3>Школа:  <a href="{{ url_for('review.review_by_school_id', school_id=school.id) }}">{{ school.title }}</a></h3>
     {% endif %}

@@ -3,7 +3,7 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DB') or 'postgresql://njves:ViX8tAxl4Gn67J8kplD9uA8gAC451IM2@dpg-clpv7phjvg7s73e1e8m0-a.frankfurt-postgres.render.com/kursoagregator'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DB') or 'postgresql://kursoagregator_rikp_user:Xw88Uf2bXVrrZ1oQLNPDFUdkqnbojIqe@dpg-cnnffp779t8c739i33fg-a.frankfurt-postgres.render.com/kursoagregator_rikp'
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'zxczxc'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
