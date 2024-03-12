@@ -55,8 +55,9 @@ def get_technology(soup, name):
     :return: Технологии курса, извлеченная из объекта BeautifulSoup.
     """
     tags = ['SQL', 'Python', 'JavaScript', 'Kotlin', 'Linux',
-            'Golang', 'Java', 'Аналитика данных', 'ML',
-            'Веб-разработка', 'Тестирование', 'C#', '1C']
+            'Golang', 'Java', 'Аналитика данных', "Machine Learning",
+            'Веб-разработка', 'Тестирование', 'C#', '1C', "Swift", "PHP",
+            "Dart", "Android",  "IOS"]
     matching_tags = []
     text = soup.find('div', class_='result-year__block')
     if text is None:
@@ -125,7 +126,8 @@ def top_academy_parser_courses_parallel() -> None:
         writer = csv.writer(csvfile)
         writer.writerow(csv_columns)
         for course in courses:
-            writer.writerow(course)
+            if course[-1] != ["Тестирование"]:
+                writer.writerow(course)
     print('Закончился парсинг https://online.top-academy.ru')
 
 

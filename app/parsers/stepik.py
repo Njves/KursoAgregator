@@ -15,9 +15,9 @@ def get_price(driver: webdriver.Chrome):
     Если цена равна "Поступить на курс", функция возвращает "0".
     Если цена начинается с "Купить за", функция возвращает сумму.
     """
-    price = driver.find_element(
-        "css selector", 'div.course-join-button button.button_with-loader')
     try:
+        price = driver.find_element(
+            "css selector", 'div.course-join-button button.button_with-loader')
         price = price.text.strip()
     except Exception:
         return None
@@ -59,8 +59,14 @@ def process_course(course):
     driver.implicitly_wait(10)
     hdr = {'User-Agent': 'Chrome/118.0.0.0'}
     request = requests.get(course, headers=hdr)
+    if request.status_code != 200:
+        return None
     soup = BeautifulSoup(request.text, 'html.parser')
     name = soup.find("meta", property="og:title")
+    tags = ['SQL', 'Python', 'JavaScript', 'Kotlin', 'Linux',
+            'Golang', 'Java', 'Аналитика данных', "Machine Learning",
+            'Веб-разработка', 'Тестирование', 'C#', '1C', "Swift", "PHP",
+            "Dart", "Android",  "IOS"]
     description = soup.find("meta", attrs={'name': 'description'})
     driver.get(course)
     price = get_price(driver)
@@ -69,8 +75,12 @@ def process_course(course):
         return None
     if not name["content"] or not description["content"]:
         return None
+    course_tags = []
+    for tag in tags:
+        if tag in description["content"] or tag in name["content"] :
+            course_tags.append(tag) 
     return (course, name["content"],
-            description["content"], duration, price, [])
+            description["content"], duration, price, course_tags)
 
 
 def stepik_parser_courses_parallel() -> None:
@@ -83,30 +93,29 @@ def stepik_parser_courses_parallel() -> None:
                 57: "Linux", 156: "Golang", 62: "Java", 236:
                 "Аналитика данных", 226: "Machine Learning",
                 181: "Веб-разработка", 219: "Тестирование",
-                210: "C#"}
+                210: "C#", 315: "Swift", 316: "PHP", 321: "Dart", 324: "1C"}
     courses = []
     for catalog, technology in catalogs.items():
-        url = 'https://stepik.org/catalog/' + str(catalog)
+        url = 'https://stepik.org/api/course-lists/' + str(catalog)
         hdr = {'User-Agent': 'Chrome/118.0.0.0'}
         request = requests.get(url, headers=hdr)
-        soup = BeautifulSoup(request.text, 'lxml')
-        pattern = re.compile(r'\/course\/\d+')
-        course_links = [link['href'] for link in soup.find_all(
-            'a', href=True) if pattern.match(link['href'])]
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        course_ids = request.json()["course-lists"][0]["courses"]
+        with concurrent.futures.ThreadPoolExecutor(10) as executor:
             futures = []
-            for course in set(course_links):
-                url_cour = 'https://stepik.org' + course + "/info"
+            for course_id in set(course_ids):
+                url_cour = 'https://stepik.org/course/' + str(course_id) + "/info"
                 if url_cour not in [course[0] for course in courses]:
                     futures.append(executor.submit(
                         process_course, url_cour))
                 else:
                     index = [course[0] for course in courses].index(url_cour)
-                    courses[index][-1].append(technology)
+                    if technology not in courses[index][-1]:
+                        courses[index][-1].append(technology)
             for future in concurrent.futures.as_completed(futures):
                 if future.result() is not None:
                     courses.append(future.result())
-                    courses[-1][-1].append(technology)
+                    if technology not in courses[-1][-1]:
+                        courses[-1][-1].append(technology)
 
     csv_columns = ['URL', 'Name',
                    "Description", 'Duration', 'Price', 'Technology']
@@ -115,7 +124,8 @@ def stepik_parser_courses_parallel() -> None:
             writer = csv.writer(csvfile)
             writer.writerow(csv_columns)
             for course in courses:
-                writer.writerow(course)
+                if course[-1] != ["Аналитика данных"]:
+                    writer.writerow(course)
     except IOError:
         print("Ошибка при записи в файл CSV")
     print('Закончился парсинг https://stepik.org')
