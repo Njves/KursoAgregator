@@ -46,6 +46,18 @@ def add_favorite():
         return flask.abort(404)
     return redirect(request.referrer)
 
+@login_required
+@bp.route('/remove_favorite', methods=['POST'])
+def remove_favorite():
+    course_id = request.form.get('course_id')
+    if course := Course.query.filter_by(id=course_id).first():
+        current_user.favorite_courses.remove(course)
+        db.session.add(current_user)
+        db.session.commit()
+    else:
+        return flask.abort(404)
+    return redirect(request.referrer)
+
 
 @bp.route('/favorite', methods=['GET'])
 def get_favorite():
@@ -64,7 +76,11 @@ def create():
 
 @bp.route('/list_courses', methods=['GET'])
 def courses():
-    favs = flask.session.get(SESSION_KEY) if flask.session.get(SESSION_KEY) else []
+    print(hasattr(current_user, 'favorite_courses'))
+    favs = []
+    if hasattr(current_user, 'favorite_courses'):
+        favs = [course.id for course in current_user.favorite_courses]
+    print(favs)
     page = request.args.get('page', 1, type=int)
     selected_filters = request.form.getlist('filter')
     current_app.logger.debug(selected_filters)
