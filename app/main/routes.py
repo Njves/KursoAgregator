@@ -1,6 +1,6 @@
 import flask
 from flask import render_template, request, redirect, url_for, current_app
-from flask_login import login_required
+from flask_login import login_required, current_user
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 
@@ -9,7 +9,6 @@ from app.main import bp
 from app.main.course_filtering import filter_courses
 from app.models import User, Course, Technology, School
 
-SESSION_KEY = 'favorite'
 
 @bp.route('/', methods=['GET'])
 def index():
@@ -25,6 +24,7 @@ def index():
     languages = [i.title for i in languages.items]
     return render_template('main/main.html', languages=languages, page=page, next_url=next_url, prev_url=prev_url)
 
+
 @bp.route('/delete', methods=['POST'])
 def delete():
     if request.method == 'POST':
@@ -33,27 +33,36 @@ def delete():
         db.session.commit()
     return redirect(url_for('main.list'))
 
+
 @login_required
 @bp.route('/favorite', methods=['POST'])
 def add_favorite():
     course_id = request.form.get('course_id')
-
-    if SESSION_KEY in flask.session:
-        courses_ids = flask.session[SESSION_KEY]
-        courses_ids.append(course_id)
-        flask.session[SESSION_KEY] = courses_ids
+    if course := Course.query.filter_by(id=course_id).first():
+        current_user.favorite_courses.append(course)
+        db.session.add(current_user)
+        db.session.commit()
     else:
-        flask.session[SESSION_KEY] = [course_id]
+        return flask.abort(404)
     return redirect(request.referrer)
+
+@login_required
+@bp.route('/remove_favorite', methods=['POST'])
+def remove_favorite():
+    course_id = request.form.get('course_id')
+    if course := Course.query.filter_by(id=course_id).first():
+        current_user.favorite_courses.remove(course)
+        db.session.add(current_user)
+        db.session.commit()
+    else:
+        return flask.abort(404)
+    return redirect(request.referrer)
+
 
 @bp.route('/favorite', methods=['GET'])
 def get_favorite():
-    course_ids = flask.session.get(SESSION_KEY) if flask.session.get(SESSION_KEY) else []
-    courses = []
-    print(course_ids)
-    for i in course_ids:
-        courses.append(Course.query.get(i))
-    return render_template('main/favorite.html', courses=courses)
+    return render_template('main/favorite.html', courses=current_user.favorite_courses)
+
 
 @bp.route('/create', methods=['POST'])
 def create():
@@ -67,7 +76,11 @@ def create():
 
 @bp.route('/list_courses', methods=['GET'])
 def courses():
-    favs = flask.session.get(SESSION_KEY) if flask.session.get(SESSION_KEY) else []
+    print(hasattr(current_user, 'favorite_courses'))
+    favs = []
+    if hasattr(current_user, 'favorite_courses'):
+        favs = [course.id for course in current_user.favorite_courses]
+    print(favs)
     page = request.args.get('page', 1, type=int)
     selected_filters = request.form.getlist('filter')
     current_app.logger.debug(selected_filters)
@@ -126,7 +139,7 @@ def course(id):
     similars = [course_map[index] for index in similar_course_indices if not index == 0]
     print(len(similars))
     reviews = data.reviews.paginate(page, current_app.config['COURSE_PER_PAGE'], False)
-    next_url = url_for('main.course', id=data.id ,page=reviews.next_num) \
+    next_url = url_for('main.course', id=data.id, page=reviews.next_num) \
         if reviews.has_next else None
     prev_url = url_for('main.course', id=data.id, page=reviews.prev_num) \
         if reviews.has_prev else None

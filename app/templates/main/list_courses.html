@@ -10,108 +10,111 @@
 <script src="{{ url_for('static', filename='script/filters.js') }}"></script>
 
 <body>
-  <div class="main">
-    <h2>Список курсов</h2>
-    <p>Используйте современную систему фильтров для выбора подходящего вам курса!</p>
-  </div>
-  </div>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12 text-center">
-        <form method="get" action="{{ url_for('main.courses') }}" class="search-form">
-          <input type="text" name="search" id="search" placeholder="Введите название курса">
-        </form>
-      </div>
-      <div class="container">
+<div class="main">
+  <h2>Список курсов</h2>
+  <p>Используйте современную систему фильтров для выбора подходящего вам курса!</p>
+</div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <form method="GET" action="{{ url_for('main.courses') }}" class="search-form" id="searchForm">
+        <input type="text" name="search" id="search" value="{{ request.args.get('search') if request.args.get('search') else ''  }}" placeholder="Введите название курса">
+        {% for filter in request.args.getlist('filter') %}
+        <input type="hidden" name="filter" />
+        {% endfor %}
+        <button class="btn btn-primary" type="submit">Искать</button>
+      </form>
+    </div>
+    <div class="container">
 
-        <div class="row">
-          <div class="col-lg-3 col-md-3 col-6">
-            <div class="sidebar">
+      <div class="row">
+        <div class="col-lg-3 col-md-3 col-6">
+          <div class="sidebar">
 
-              <form method="GET" action="{{ url_for('main.courses') }}" class="form_filter">
-                {% for block_idx, (block, filters) in indexed_filter_dict %}
-                <h5>
-                  <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button"
-                    data-index="{{ block_idx }}">
-                  {{ block }}
-                </h5>
-                <div class="filter-container" data-index="{{ block_idx }}" style="display: block;">
-                  {% for filter in filters %}
-                  <label><input type="checkbox" class="filter-label" name="filter" value="{{ filter }}" {% if filter in
-                      select %}checked{% endif %}>{{ filter }}</label>
-                  <br>
-                  {% endfor %}
-                </div>
+            <form method="GET" action="{{ url_for('main.courses') }}" class="form_filter" id="formFilter">
+              <input type="hidden" name="search" value="{{ request.args.get('search') }}">
+              {% for block_idx, (block, filters) in indexed_filter_dict %}
+              <h5>
+                <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button"
+                     data-index="{{ block_idx }}">
+                {{ block }}
+              </h5>
+              <div class="filter-container" data-index="{{ block_idx }}" style="display: block;">
+                {% for filter in filters %}
+                <label><input type="checkbox" class="filter-label" name="filter" value="{{ filter }}" {% if filter in
+                              select %}checked{% endif %}>{{ filter }}</label>
+                <br>
                 {% endfor %}
-                <h5>
-                  <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button"
-                    data-index="duration">
-                  Длительность(ч)
-                </h5>
-                <div class="filter-container row" data-index="duration" style="display: block;">
-                  <div class="col-md-3 col-6">
-                    <label><input type="number" name="duration_from" placeholder="От:" min="0"></label>
-                  </div>
-                  <div class="col-md-3 col-6">
-                    <label><input type="number" name="duration_to" placeholder="До:" min="0"></label>
-                  </div>
-                </div>
-                <h5>
-                  <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button"
-                    data-index="price">
-                  Цена(₽)
-                </h5>
-                <div class="filter-container row" data-index="price" style="display: block;">
-                  <div class="col-md-6 col-6">
-                    <label><input type="number" name="price_from" placeholder="От:" min="0"></label>
-                  </div>
-                  <div class="col-md-6">
-                    <label><input type="number" name="price_to" placeholder="До:" min="0"></label>
-                  </div>
-                </div>
-                <input type="hidden" name="page" value="{{ page }}" />
-                <button type="submit">Применить фильтры</button>
-              </form>
-
-            </div>
-          </div>
-
-          <!-- Main content with courses -->
-          <div class="col-md-9 col-6">
-            <div class="main-content row">
-              {% for course in courses %}
-              {% if loop.index+1 is divisibleby(2) %}
-
-              <div class="courses-container col-md-6 position-relative">
-                <h5><a class="nav-link" href="{{ url_for('main.course', id=course.id) }}">{{ course.name }}</a></h5>
-                <p>{{ course.description[:50] + '...' if course.description|length > 50 else course.description }}</p>
-                <form method="POST" action="{{ url_for('main.add_favorite') }}">
-                  <input type="hidden" name="course_id" value="{{ course.id }}">
-                  <button class="btn favs position-absolute top-0 end-0">
-                    {% if course.id|string in favs %}
-                    <i class="fas fa-heart icon-adjust"></i>
-                    {% else %}
-                    <i class="fa-regular fa-heart icon-adjust"></i>
-                    {% endif %}
-                  </button>
-                </form>
               </div>
-              {% else %}
-              <div class="courses-container col-md-6">
-                <h5>{{ course.name }}</a>
-                  <p>{{ course.description }}</p>
-                </h5>
-                {% endif %}
-                {% endfor %}
-                <div class="pages">
-                  {% if prev_url %}
-                  <a href="{{ prev_url }}">Предыдущая страница</a>
-                  {% endif %}
-                  <span>Страница {{ page }}</span>
-                  {% if next_url %}
-                  <a href="{{ next_url }}">Следующая страница</a>
-                  {% endif %}
+              {% endfor %}
+              <h5>
+                <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button"
+                     data-index="duration">
+                Длительность(ч)
+              </h5>
+              <div class="filter-container row" data-index="duration" style="display: block;">
+                <div class="col-md-3 col-6">
+                  <label><input type="number" name="duration_from" placeholder="От:" min="0"></label>
                 </div>
+                <div class="col-md-3 col-6">
+                  <label><input type="number" name="duration_to" placeholder="До:" min="0"></label>
+                </div>
+              </div>
+              <h5>
+                <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button"
+                     data-index="price">
+                Цена(₽)
+              </h5>
+              <div class="filter-container row" data-index="price" style="display: block;">
+                <div class="col-md-6 col-6">
+                  <label><input type="number" name="price_from" placeholder="От:" min="0"></label>
+                </div>
+                <div class="col-md-6">
+                  <label><input type="number" name="price_to" placeholder="До:" min="0"></label>
+                </div>
+              </div>
+              <input type="hidden" name="page" value="{{ page }}" />
+              <button type="submit">Применить фильтры</button>
+            </form>
+
+          </div>
+        </div>
+
+        <!-- Main content with courses -->
+        <div class="col-md-9 col-6">
+          <div class="main-content row">
+            {% for course in courses %}
+            {% if loop.index+1 is divisibleby(2) %}
+            <div class="courses-container col-md-6 position-relative">
+              <h5><a class="nav-link" href="{{ url_for('main.course', id=course.id) }}">{{ course.name }}</a></h5>
+              <p>{{ course.description[:50] + '...' if course.description|length > 50 else course.description }}</p>
+              <form method="POST" action="{{ url_for('main.add_favorite') }}">
+                <input type="hidden" name="course_id" value="{{ course.id }}">
+                <button class="btn favs position-absolute top-0 end-0">
+                  {% if course.id in favs %}
+                  <i class="fas fa-heart icon-adjust"></i>
+                  {% else %}
+                  <i class="fa-regular fa-heart icon-adjust"></i>
+                  {% endif %}
+                </button>
+              </form>
+            </div>
+            {% else %}
+            <div class="courses-container col-md-6">
+              <h5>{{ course.name }}</a>
+                <p>{{ course.description }}</p>
+              </h5>
+              {% endif %}
+              {% endfor %}
+              <div class="pages">
+                {% if prev_url %}
+                <a href="{{ prev_url }}">Предыдущая страница</a>
+                {% endif %}
+                <span>Страница {{ page }}</span>
+                {% if next_url %}
+                <a href="{{ next_url }}">Следующая страница</a>
+                {% endif %}
               </div>
             </div>
           </div>
@@ -119,7 +122,32 @@
       </div>
     </div>
   </div>
+</div>
 </body>
-
 </html>
+<script>
+  $(document).ready(function() {
+    $('#searchForm').submit(function(e) {
+      e.preventDefault(); // Предотвращаем отправку формы по умолчанию
+
+      // Собираем данные из формы с фильтрами
+      var filterData = $('#formFilter').serializeArray();
+
+      // Добавляем данные из формы с фильтрами в форму поиска
+      $.each(filterData, function(index, field) {
+        if(field.name !== 'search') {
+          $('<input>').attr({
+            type: 'hidden',
+            name: field.name,
+            value: field.value
+          }).appendTo('#searchForm');
+        }
+      });
+      debugger
+      // Отправляем форму поиска
+      $('#searchForm').unbind('submit').submit();
+    });
+  });
+</script>
+
 {% endblock %}

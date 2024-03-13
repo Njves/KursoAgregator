@@ -19,6 +19,11 @@ school_review = db.Table('school_review',
                          db.Column('school_id', db.Integer, db.ForeignKey('school.id', ondelete='CASCADE')),
                          db.Column('review_id', db.Integer, db.ForeignKey('review.id', ondelete='CASCADE')))
 
+favorite_user_course = db.Table('favorite_user_course',
+                                db.Column('course_id', db.Integer, db.ForeignKey('course.id', ondelete='CASCADE')),
+                                db.Column('user_id', db.Integer, db.ForeignKey('user.id', ondelete='CASCADE')))
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
@@ -42,6 +47,7 @@ class User(db.Model, UserMixin):
     date = db.Column(db.DateTime, default=datetime.utcnow, comment='date of registation')
     last_seen = db.Column(db.DateTime, default=datetime.utcnow, comment='last seen user in online')
     reviews = db.relationship('Review', backref='author', lazy='dynamic')
+    favorite_courses = db.relationship('Course', backref='adder', secondary=favorite_user_course, lazy='dynamic')
 
     def get_reset_password_token(self, expires_in=600):
         return jwt.encode(
