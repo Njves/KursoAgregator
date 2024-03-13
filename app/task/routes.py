@@ -32,7 +32,6 @@ def parse():
     """
     init(current_app)
     current_app.logger.info('Запросили парсинг')
-    # validate_data()
     if all(get_school(current_app)):
         init(current_app)
     __parsers_names = {School.query.filter_by(title='Geekbrains').first(): 'geekbrains.csv',
@@ -46,6 +45,7 @@ def parse():
     # top_academy_parser_courses_parallel()
     # stepik_parser_courses_parallel()
     # print('Закончил парсинг')
+    validate_data()
     links = [course.link for course in Course.query.all()]
     for school, file_name in __parsers_names.items():
         path = pathlib.Path(basedir, 'app', 'parsers', file_name)

@@ -1,6 +1,7 @@
 """Модуль парсинга со Hexlet"""
 import csv
 import re
+import time
 from bs4 import BeautifulSoup
 import requests
 import concurrent.futures
@@ -73,8 +74,14 @@ def hexlet_parser_courses_parallel() -> None:
     hdr = {'User-Agent': 'Chrome/119.0.0.0'}
     catalogs = {'https://ru.hexlet.io/courses-python': 'Python',
                 'https://ru.hexlet.io/courses-sql': 'SQL',
-                'https://ru.hexlet.io/courses-java': 'Java'}
+                'https://ru.hexlet.io/courses-java': 'Java',
+                'https://ru.hexlet.io/courses-go': 'Golang',
+                'https://ru.hexlet.io/courses-web-development': "Веб-разработка",
+                'https://ru.hexlet.io/courses-php': 'PHP',
+                'https://ru.hexlet.io/courses-javascript': "JavaScript",
+                'https://ru.hexlet.io/courses-testing': 'Тестирование'}
     for catalog, technology in catalogs.items():
+        time.sleep(5)
         request = requests.get(catalog, headers=hdr)
         soup = BeautifulSoup(request.text, 'html.parser')
         links = soup.find_all('a', class_='stretched-link')
@@ -93,15 +100,17 @@ def hexlet_parser_courses_parallel() -> None:
                     courses[index][-1].append(technology)
             for future in concurrent.futures.as_completed(futures):
                 if future.result() is not None:
-                    courses.append(future.result())
-                    courses[-1][-1].append(technology)
+                    if future.result()[0] not in [course[0] for course in courses]:
+                        courses.append(future.result())
+                        courses[-1][-1].append(technology)
     csv_columns = ['URL', 'Name',
                    "Description", 'Duration', 'Price', 'Technology']
     with open("app/parsers/hexlet.csv", 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(csv_columns)
         for course in courses:
-            writer.writerow(course)
+            if len(course[-1]) < 3 and course[-1] != ["Тестирование"]:
+                writer.writerow(course)
     print('Закончился парсинг https://ru.hexlet.io')
 
 

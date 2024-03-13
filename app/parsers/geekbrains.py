@@ -83,13 +83,15 @@ def get_technology(soup):
     """
     tags = ['SQL', 'Python', 'JavaScript', 'Kotlin', 'Linux',
             'Golang', 'Java', 'Аналитика данных', 'Machine Learning',
-            'Веб-разработка', 'Тестирование', 'C#', '1C']
+            'Веб-разработка', 'Тестирование', 'C#', '1C', "Swift", "PHP",
+            "Dart", "Android",  "IOS"]
     matching_tags = []
     img_tags = soup.find_all('img')
-    for tag in img_tags:
-        alt_text = tag.get('alt')
-        if alt_text in tags:
-            matching_tags.append(alt_text)
+    img_tags = [tag.get('alt') for tag in img_tags]
+    for tag in tags:
+        if tag in img_tags:
+            if tag not in matching_tags:
+                matching_tags.append(tag)
     return matching_tags
 
 
