@@ -89,16 +89,21 @@
             <div class="courses-container col-md-6 position-relative">
               <h5><a class="nav-link" href="{{ url_for('main.course', id=course.id) }}">{{ course.name }}</a></h5>
               <p>{{ course.description[:50] + '...' if course.description|length > 50 else course.description }}</p>
+              {% if course.id in favs %}
+              <form method="POST" action="{{ url_for('main.remove_favorite') }}">
+                <input type="hidden" name="course_id" value="{{ course.id }}">
+                <button class="btn favs position-absolute top-0 end-0">
+                  <i class="fas fa-heart icon-adjust"></i>
+                </button>
+              </form>
+              {% else %}
               <form method="POST" action="{{ url_for('main.add_favorite') }}">
                 <input type="hidden" name="course_id" value="{{ course.id }}">
                 <button class="btn favs position-absolute top-0 end-0">
-                  {% if course.id in favs %}
-                  <i class="fas fa-heart icon-adjust"></i>
-                  {% else %}
                   <i class="fa-regular fa-heart icon-adjust"></i>
-                  {% endif %}
                 </button>
               </form>
+              {% endif %}
             </div>
             {% else %}
             <div class="courses-container col-md-6">

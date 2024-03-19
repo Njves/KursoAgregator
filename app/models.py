@@ -21,7 +21,9 @@ school_review = db.Table('school_review',
 
 favorite_user_course = db.Table('favorite_user_course',
                                 db.Column('course_id', db.Integer, db.ForeignKey('course.id', ondelete='CASCADE')),
-                                db.Column('user_id', db.Integer, db.ForeignKey('user.id', ondelete='CASCADE')))
+                                db.Column('user_id', db.Integer, db.ForeignKey('user.id', ondelete='CASCADE')),
+                                db.UniqueConstraint('course_id', 'user_id'))
+
 
 
 @login_manager.user_loader
