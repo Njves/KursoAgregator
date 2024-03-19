@@ -10,6 +10,7 @@ class Config(object):
     COURSE_PER_PAGE = 26
     TECHNOLOGY_PER_PAGE = 9
     CACHE_TYPE = os.environ.get('CACHE_TYPE') or 'simple'
+    SQLALCHEMY_ECHO = True
     CACHE_REDIS_HOST = os.environ.get('CACHE_HOST')
     ADMINS = ['mrpostik@gmail.com']
     MAIL_SERVER = os.environ.get('MAIL_SERVER')

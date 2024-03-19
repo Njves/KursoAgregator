@@ -93,7 +93,7 @@ class Course(db.Model):
 
     def __repr__(self) -> str:
         return f'Course {self.id}, name: {self.name}, price: {self.price}, date_start: {self.date_start},' \
-               f' link: {self.link}'
+               f' link: {self.link}, technologies: {self.technologies}'
 
     def to_dict(self):
         return {'id': self.id, 'name': self.name,  'price': self.price, 'date_start': self.date_start, 'link': self.link}
