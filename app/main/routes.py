@@ -62,7 +62,33 @@ def remove_favorite():
 
 @bp.route('/favorite', methods=['GET'])
 def get_favorite():
-    return render_template('main/favorite.html', courses=current_user.favorite_courses)
+    page = request.args.get('page', 1, type=int)
+    selected_filters = request.form.getlist('filter')
+    current_app.logger.debug(selected_filters)
+    if not selected_filters:
+        selected_filters = request.args.getlist('filter')
+    current_app.logger.debug(selected_filters)
+    unique_technologies = Technology.query.with_entities(
+        Technology.title).distinct().all()
+    unique_schools = School.query.with_entities(School.title).distinct().all()
+    filter_dict = {
+        'Направления': [tech[0] for tech in unique_technologies],
+        'Школа': [school[0] for school in unique_schools]
+    }
+    indexed_filter_dict = enumerate(filter_dict.items())
+    filtered_courses = filter_courses(filter_dict, selected_filters, current_user.favorite_courses).order_by(Course.date_start.desc())
+    filtered_courses = filtered_courses.paginate(page, current_app.config['COURSE_PER_PAGE'], False)
+    next_url = url_for('main.get_favorite', page=filtered_courses.next_num) \
+        if filtered_courses.has_next else None
+    prev_url = url_for('main.get_favorite', page=filtered_courses.prev_num) \
+        if filtered_courses.has_prev else None
+    return render_template('main/favorite.html', courses=filtered_courses.items,
+                           indexed_filter_dict=indexed_filter_dict,
+                           select=selected_filters,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           page=page)
+
 
 
 @bp.route('/create', methods=['POST'])
@@ -77,17 +103,14 @@ def create():
 
 @bp.route('/list_courses', methods=['GET'])
 def courses():
-    print(hasattr(current_user, 'favorite_courses'))
     favs = []
     if hasattr(current_user, 'favorite_courses'):
         favs = [course.id for course in current_user.favorite_courses]
-    print(favs)
     page = request.args.get('page', 1, type=int)
     selected_filters = request.form.getlist('filter')
     current_app.logger.debug(selected_filters)
     if not selected_filters:
         selected_filters = request.args.getlist('filter')
-    print(selected_filters)
     current_app.logger.debug(selected_filters)
     unique_technologies = Technology.query.with_entities(
         Technology.title).distinct().all()

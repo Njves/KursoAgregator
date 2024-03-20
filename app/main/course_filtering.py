@@ -3,7 +3,9 @@ from sqlalchemy import Integer, cast, func
 from app.models import Course, School, Technology
 
 
-def filter_courses(filter_dict, selected_filters):
+def filter_courses(filter_dict, selected_filters, query=None):
+    if query is None:
+        query = Course.query
     price_from = request.args.get('price_from')
     price_to = request.args.get('price_to')
     duration_from = request.args.get('duration_from')
@@ -15,7 +17,6 @@ def filter_courses(filter_dict, selected_filters):
             if item in value:
                 select_filter_dict[key].append(item)
                 break
-    query = Course.query
     if price_from:
         query = query.filter(Course.price >= float(price_from))
     if price_to:

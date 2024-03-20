@@ -5,7 +5,7 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/courses.css') }}">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <script src="{{ url_for('static', filename='script/filters.js') }}"></script>
 <body>
 <div class="main">
@@ -26,7 +26,7 @@
         <div class="col-lg-3 col-md-3 col-6">
           <div class="sidebar">
 
-            <form method="GET" action="{{ url_for('main.courses') }}" class="form_filter">
+            <form method="GET" action="{{ url_for('main.get_favorite') }}" class="form_filter">
               {% for block_idx, (block, filters) in indexed_filter_dict %}
               <h5>
                 <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button" data-index="{{ block_idx }}">
@@ -75,9 +75,15 @@
           <div class="main-content row">
             {% for course in courses %}
             {% if loop.index+1 is divisibleby(2) %}
-            <div class="courses-container col-md-6">
+            <div class="courses-container col-md-6 position-relative">
               <h5><a class="nav-link" href="{{ url_for('main.course', id=course.id) }}">{{ course.name }}</a></h5>
               <p>{{ course.description[:50] + '...' if course.description|length > 50 else course.description }}</p>
+              <form method="POST" action="{{ url_for('main.remove_favorite') }}">
+                <input type="hidden" name="course_id" value="{{ course.id }}">
+                <button class="btn favs position-absolute top-0 end-0">
+                  <i class="fas fa-heart icon-adjust"></i>
+                </button>
+              </form>
             </div>
             {% else %}
             <div class="courses-container col-md-6">
