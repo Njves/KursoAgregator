@@ -2,15 +2,16 @@ from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required
 
 from app import db
-from app.models import User
+from app.models import User, Technology
 from app.user import bp
 
 
-@bp.route('/profile/<int:user_id>')
+@bp.route('/profile/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def profile_view(user_id):
     user = User.query.get_or_404(user_id)
-    return render_template('user/main.html', user=user)
+    technologies = Technology.query.all()
+    return render_template('user/main.html', user=user, technologies=technologies)
 
 @bp.route('/user/<int:user_id>/password/update', methods=['POST'])
 @login_required
@@ -31,3 +32,11 @@ def update_password_profile(user_id):
     flash('Пароль успешно обновлен')
     return redirect(url_for('user_bp.profile_view', user_id=user_id))
 
+@bp.route('/<int:user_id>/subscribe', methods=['GET', 'POST'])
+@login_required
+def subscribe(user_id):
+    if request.method == 'POST':
+        selected_technologies = request.form.getlist('technologies[]')
+        for technology_id in selected_technologies:
+            print(f"Выбрана технология с ID {technology_id}")
+    return redirect(url_for('user_bp.profile_view', user_id=user_id))
