@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/profile.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/review.css') }}">
 <div class="container mt-2">
     <h2>Личный кабинет</h2>
     <h4>Пользователь {{ user.username }}</h4>
@@ -61,11 +62,12 @@
             <button type="submit" class="btn btn-primary">Подписаться</button>
         </form>
     </div>
-    <h4 class="container-fluid w-50 d-flex justify-content-center">
-        Ваши отзывы
+    <div>
+        <h4 class="container-fluid w-50 d-flex justify-content-center">Ваши отзывы</h4>
         {% for review in user.reviews %}
         {% include "review/review_item.html" %}
         {% endfor %}
+    </div>
 </div>
 <script>
     const inputPassword = document.getElementById('inputPassword')
