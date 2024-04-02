@@ -9,7 +9,8 @@
             <div class="mb-3">
                 <label for="inputEmail" class="form-label">Электронная почта</label>
                 <div class="input-group">
-                    <input type="email" class="form-control" id="inputEmail" value="{{ user.email }}" placeholder="name@examle.com" aria-label="Электронная почта" aria-describedby="basic-addon1">
+                    <input type="email" class="form-control" id="inputEmail" value="{{ user.email }}"
+                        placeholder="name@examle.com" aria-label="Электронная почта" aria-describedby="basic-addon1">
                     <button class="btn btn-primary">Подтвердить почту</button>
                 </div>
                 <div id="emailSubmitStatus" class="form-text text-danger">
@@ -31,7 +32,8 @@
                 <div class="col-6">
 
                     <label for="inputPasswordRepeat" class="form-label">Повторите пароль</label>
-                    <input type="password" id="inputPasswordRepeat" class="form-control" aria-describedby="passwordHelpBlock">
+                    <input type="password" id="inputPasswordRepeat" class="form-control"
+                        aria-describedby="passwordHelpBlock">
                     <div id="passwordRepeatHelpBlock" class="form-text text-danger" style="display: none">
                         Пароли не совпадают
                     </div>
@@ -39,7 +41,7 @@
                 </div>
             </div>
         </form>
-    </div> 
+    </div>
     <div>
         <h4 class="container-fluid w-50 d-flex justify-content-center">Подписка на уведомления о новых курсах</h4>
         <form method="POST" action="{{ url_for('user_bp.subscribe', user_id=user.id) }}">
@@ -47,8 +49,11 @@
                 {% for technology in technologies %}
                 <div class="col-sm-6">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="technology{{ technology.id }}" name="technologies[]" value="{{ technology.id }}">
-                        <label class="form-check-label" for="technology{{ technology.id }}">{{ technology.title }}</label>
+                        <input type="checkbox" class="form-check-input" id="technology{{ technology.id }}"
+                            name="technologies[]" value="{{ technology.id }}" {% if technology.id in
+                            subscribed_technologies %} checked {% endif %}>
+                        <label class="form-check-label" for="technology{{ technology.id }}">{{ technology.title
+                            }}</label>
                     </div>
                 </div>
                 {% endfor %}
@@ -58,8 +63,8 @@
     </div>
     <h4 class="container-fluid w-50 d-flex justify-content-center">
         Ваши отзывы
-    {% for review in user.reviews %}
-            {% include "review/review_item.html" %}
+        {% for review in user.reviews %}
+        {% include "review/review_item.html" %}
         {% endfor %}
 </div>
 <script>
@@ -68,12 +73,12 @@
     const passwordMessage = document.getElementById('passwordRepeatHelpBlock')
     const buttonUpdateMessage = document.getElementById('buttonUpdatePassword')
     inputPassword.addEventListener('input', () => {
-        if(inputPassword.value.length < 6) {
+        if (inputPassword.value.length < 6) {
             passwordMessage.style.display = "block"
             passwordMessage.innerHTML = 'Пароль слишком короткий'
             buttonUpdateMessage.disabled = true
         }
-        else if(inputPassword.value !== inputPasswordRepeat.value) {
+        else if (inputPassword.value !== inputPasswordRepeat.value) {
             passwordMessage.style.display = "block"
             passwordMessage.innerHTML = 'Пароли не совпадают'
             buttonUpdateMessage.disabled = true
@@ -83,12 +88,12 @@
         }
     })
     inputPasswordRepeat.addEventListener('input', () => {
-        if(inputPassword.value.length < 6) {
+        if (inputPassword.value.length < 6) {
             passwordMessage.style.display = "block"
             passwordMessage.innerHTML = 'Пароль слишком короткий'
             buttonUpdateMessage.disabled = true
         }
-        else if(inputPassword.value !== inputPasswordRepeat.value) {
+        else if (inputPassword.value !== inputPasswordRepeat.value) {
             passwordMessage.style.display = "block"
             passwordMessage.innerHTML = 'Пароли не совпадают'
             buttonUpdateMessage.disabled = true
