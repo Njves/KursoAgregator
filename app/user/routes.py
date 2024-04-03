@@ -10,8 +10,9 @@ from app.user import bp
 @login_required
 def profile_view(user_id):
     user = User.query.get_or_404(user_id)
+    subscribed_technologies = [technology.id for technology in user.subscribed_technologies]
     technologies = Technology.query.all()
-    return render_template('user/main.html', user=user, technologies=technologies)
+    return render_template('user/main.html', user=user, subscribed_technologies=subscribed_technologies, technologies=technologies)
 
 @bp.route('/user/<int:user_id>/password/update', methods=['POST'])
 @login_required
@@ -35,8 +36,12 @@ def update_password_profile(user_id):
 @bp.route('/<int:user_id>/subscribe', methods=['GET', 'POST'])
 @login_required
 def subscribe(user_id):
+    user = User.query.get_or_404(user_id)
     if request.method == 'POST':
         selected_technologies = request.form.getlist('technologies[]')
+        user.subscribed_technologies = []
         for technology_id in selected_technologies:
-            print(f"Выбрана технология с ID {technology_id}")
+            technology = Technology.query.get_or_404(technology_id)
+            user.subscribed_technologies.append(technology)
+        db.session.commit()
     return redirect(url_for('user_bp.profile_view', user_id=user_id))

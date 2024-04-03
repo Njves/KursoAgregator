@@ -23,7 +23,7 @@ def validate_data():
                     if 'неде' in row['Duration']:
                         duration *= 168
                     if 'мес' in row['Duration']:
-                        duration *= 168 * 30
+                        duration *= 24 * 30
                     row['Duration'] = duration
                 if row.get('Price', False):
                     row['Price']: int = int(''.join([i for i in row['Price'] if i.isnumeric()]))

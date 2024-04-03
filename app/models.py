@@ -24,6 +24,10 @@ favorite_user_course = db.Table('favorite_user_course',
                                 db.Column('user_id', db.Integer, db.ForeignKey('user.id', ondelete='CASCADE')),
                                 db.UniqueConstraint('course_id', 'user_id'))
 
+subscribe_user_technology = db.Table('subscribe_user_technology',
+                                db.Column('technology_id', db.Integer, db.ForeignKey('technology.id', ondelete='CASCADE')),
+                                db.Column('user_id', db.Integer, db.ForeignKey('user.id', ondelete='CASCADE')),
+                                db.UniqueConstraint('technology_id', 'user_id'))
 
 
 @login_manager.user_loader
@@ -104,6 +108,7 @@ class Course(db.Model):
 class Technology(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(128), nullable=False)
+    subscribed_users = db.relationship('User', backref='subscribed_technologies', secondary=subscribe_user_technology, lazy='dynamic')
 
     def __repr__(self):
         return f'Технология: {self.id}, название: {self.title}'

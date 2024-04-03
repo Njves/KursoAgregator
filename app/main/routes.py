@@ -78,9 +78,17 @@ def get_favorite():
     indexed_filter_dict = enumerate(filter_dict.items())
     filtered_courses = filter_courses(filter_dict, selected_filters, current_user.favorite_courses).order_by(Course.date_start.desc())
     filtered_courses = filtered_courses.paginate(page, current_app.config['COURSE_PER_PAGE'], False)
-    next_url = url_for('main.get_favorite', page=filtered_courses.next_num) \
+    filters = {
+        'search': request.args.get('search'),
+        'filter': selected_filters,
+        'duration_from': request.args.get('duration_from'),
+        'duration_to': request.args.get('duration_to'),
+        'price_from': request.args.get('price_from'),
+        'price_to': request.args.get('price_to')
+    }
+    next_url = url_for('main.get_favorite', **filters, page=filtered_courses.next_num,  ) \
         if filtered_courses.has_next else None
-    prev_url = url_for('main.get_favorite', page=filtered_courses.prev_num) \
+    prev_url = url_for('main.get_favorite',  **filters, page=filtered_courses.prev_num) \
         if filtered_courses.has_prev else None
     return render_template('main/favorite.html', courses=filtered_courses.items,
                            indexed_filter_dict=indexed_filter_dict,
@@ -122,9 +130,17 @@ def courses():
     indexed_filter_dict = enumerate(filter_dict.items())
     filtered_courses = filter_courses(filter_dict, selected_filters).order_by(Course.date_start.desc())
     filtered_courses = filtered_courses.paginate(page, current_app.config['COURSE_PER_PAGE'], False)
-    next_url = url_for('main.courses', page=filtered_courses.next_num) \
+    filters = {
+        'search': request.args.get('search'),
+        'filter': selected_filters,
+        'duration_from': request.args.get('duration_from'),
+        'duration_to': request.args.get('duration_to'),
+        'price_from': request.args.get('price_from'),
+        'price_to': request.args.get('price_to')
+    }
+    next_url = url_for('main.courses', **filters, page=filtered_courses.next_num ) \
         if filtered_courses.has_next else None
-    prev_url = url_for('main.courses', page=filtered_courses.prev_num) \
+    prev_url = url_for('main.courses', **filters, page=filtered_courses.next_num ) \
         if filtered_courses.has_prev else None
     return render_template('main/list_courses.html', courses=filtered_courses.items,
                            indexed_filter_dict=indexed_filter_dict,
