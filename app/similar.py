@@ -20,6 +20,8 @@ def cos_sim_vecs(vec1, vec2):
 def get_similar_course(course, courses):
     recommended_courses = []
     for i in courses:
+        if i == course:
+            continue
         text_vec, target_vec = str_to_vecs(course.name, i.name)
         score = cos_sim_vecs(text_vec, target_vec)
         recommended_courses.append((score, i))
