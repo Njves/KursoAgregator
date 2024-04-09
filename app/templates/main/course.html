@@ -5,10 +5,30 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/course.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/review.css') }}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <body>
 
 <main>
-    <h2><a href="{{ course.link }}" target="_blank" class="course-link">{{ course.name }}</a></h2>
+    <div class="d-flex align-items-center">
+        <h2 class="mr-3">
+            <a href="{{ course.link }}" target="_blank" class="course-link">{{ course.name }}</a>
+        </h2>
+        {% if course.id in favs %}
+            <form method="POST" action="{{ url_for('main.course', id=course.id) }}">
+                <input type="hidden" name="course_id" value="{{ course.id }}">
+                <button class="btn favs">
+                    <i class="fas fa-heart fa-lg icon-adjust"></i>
+                </button>
+            </form>
+        {% else %}
+            <form method="POST" action="{{ url_for('main.course', id=course.id) }}">
+                <input type="hidden" name="course_id" value="{{ course.id }}">
+                <button class="btn favs">
+                    <i class="fa-regular fa-heart fa-lg icon-adjust"></i>
+                </button>
+            </form>
+        {% endif %}
+    </div>
     <a href="{{ course.link }}" target="_blank" >Ссылка на курс</a>
     <p>{{ course.description }}</p>
     <h3>Технологии:</h3>
@@ -29,8 +49,8 @@
     {% else %}
     <h3>Бесплатный курс</h3>
     {% endif %}
-    {% if course.date_start %}
-    <h3>Когда можно начать:  {{ course.date_start.strftime('%d.%m.%Y') }}</h3>
+    {% if duration %}
+    <h3>Длительность курса: {{ duration }}</h3>
     {% endif %}
     {% include "flash.html" %}
     <form action="{{ url_for('review.write_review', course_id=course.id) }}" method="POST">

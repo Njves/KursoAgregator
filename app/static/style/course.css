@@ -84,3 +84,13 @@ main h3{
 .course-link:hover {
     text-decoration: underline;
 }
+.favs {
+    font-size: 1.25rem;
+    color: #ffffff;
+}
+
+.icon-adjust {
+    position: relative;
+    top: -5px;
+    right: -5px;
+}

@@ -38,8 +38,20 @@ def get_duration(soup):
     :return: Продолжительность курса, извлеченная из объекта BeautifulSoup.
     """
     duration_tag = soup.find('div', class_='mb-2 text-body-secondary')
-    duration = duration_tag.get_text().strip()
-    return duration.removeprefix("Продолжительность ")
+    if duration_tag is not None:
+        duration = duration_tag.get_text().strip()
+        return duration.removeprefix("Продолжительность ")
+
+def get_price(soup):
+    """
+    Функция извлекает цену курса из объекта BeautifulSoup.
+    :param soup: Объект BeautifulSoup, представляющий HTML-контент страницы.
+    :return: Цена курса, извлеченная из объекта BeautifulSoup.
+    """
+    price_tag = soup.find('span', class_='h2 fw-bold mb-0')
+    if price_tag is not None:
+        price = price_tag.get_text().strip()
+        return price
 
 
 def process_course(course):
@@ -57,8 +69,10 @@ def process_course(course):
         soup = BeautifulSoup(request.text, 'html.parser')
         name = get_name(soup)
         description = get_description(soup)
-        price = '3900 ₽'
+        price = get_price(soup)
         duration = get_duration(soup)
+        if soup is None or description is None or price is None or duration is None:
+            return
         return (request.url, name,
                 description, duration, price, [])
     return None

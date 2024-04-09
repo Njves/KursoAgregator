@@ -95,14 +95,7 @@ input[type="number"]{
 }
 
 .favs {
-    font-size: 1.25rem;
     color: #ffffff;
-}
-
-.icon-adjust {
-    position: relative;
-    top: -5px;
-    right: -5px;
 }
 
 @media screen and (max-width: 768px) {
