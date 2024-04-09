@@ -142,26 +142,9 @@
   $(document).ready(function () {
     $('#searchForm').submit(function (e) {
       e.preventDefault(); // Предотвращаем отправку формы по умолчанию
-
-      // Собираем данные из формы с фильтрами
-      var filterData = $('#formFilter').serializeArray();
-
-      // Добавляем данные из формы с фильтрами в форму поиска
-      $.each(filterData, function (index, field) {
-        if (field.name !== 'search') {
-          $('<input>').attr({
-            type: 'hidden',
-            name: field.name,
-            value: field.value
-          }).appendTo('#searchForm');
-        }
-      });
-      debugger
-      // Отправляем форму поиска
-      $('#searchForm').unbind('submit').submit();
+      $('#formFilter').unbind('submit').submit();
     });
     $('#search').on('input', function() {
-            console.log("aaaaaaaaa")
             $('#search2').val($(this).val());
         });
   });

@@ -7,6 +7,7 @@ from sklearn.metrics.pairwise import linear_kernel
 from app import db, similar
 from app.main import bp
 from app.main.course_filtering import filter_courses
+from app.main.hours_to_time import format_time
 from app.models import User, Course, Technology, School
 from app.similar import get_similar_course
 
@@ -153,11 +154,14 @@ def courses():
 
 @bp.route('/course/<int:id>')
 def course(id):
+    favs = []
+    if hasattr(current_user, 'favorite_courses'):
+        favs = [course.id for course in current_user.favorite_courses]
     page = request.args.get('page', 1, type=int)
     data: Course = Course.query.get(id)
     technologies = data.technologies.all()
     school = School.query.get(data.school_id)
-
+    duration = format_time(int(data.duration))
     source = Course.query.get(id)
     if not source:
         return []
@@ -177,5 +181,6 @@ def course(id):
                            next_url=next_url,
                            prev_url=prev_url,
                            page=page,
-                           duration=data.duration,
+                           favs=favs,
+                           duration=duration,
                            similars=similars)

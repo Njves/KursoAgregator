@@ -26,7 +26,7 @@ def validate_data():
                         duration *= 24 * 30
                     row['Duration'] = duration
                 if row.get('Price', False):
-                    row['Price']: int = int(''.join([i for i in row['Price'] if i.isnumeric()]))
+                    row['Price'] = float(''.join(filter(lambda x: x.isdigit() or x in [',', "."], row['Price'])).replace(',', '.'))
                 data.append(row)
         with open(path, 'w', encoding='utf-8') as file:
             fields = csv_reader.fieldnames

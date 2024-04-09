@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-Список курсов
+Избранное
 {% endblock %}
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/courses.css') }}">
@@ -9,15 +9,21 @@
 <script src="{{ url_for('static', filename='script/filters.js') }}"></script>
 <body>
 <div class="main">
-  <h2>Список курсов</h2>
-  <p>Используйте современную систему фильтров для выбора подходящего вам курса!</p>
+  <h2>Список избранных курсов</h2>
+  <p>Используйте современную систему фильтров для фильтрации избранных фильтров!</p>
 </div>
 </div>
 <div class="container">
   <div class="row">
     <div class="col-md-12 text-center">
-      <form method="get" action="{{ url_for('main.courses') }}" class="search-form">
-        <input type="text" name="search" id="search" placeholder="Введите название курса">
+      <form method="get" action="{{ url_for('main.get_favorite') }}" class="search-form" id="searchForm">
+        <input type="text" name="search" id="search"
+            value="{{ request.args.get('search') if request.args.get('search') else ''  }}"
+            placeholder="Введите название курса">
+            {% for filter in request.args.getlist('filter') %}
+            <input type="hidden" name="filter" />
+            {% endfor %}
+            <button class="btn btn-primary" type="submit">Искать</button>
       </form>
     </div>
     <div class="container">
@@ -26,7 +32,9 @@
         <div class="col-lg-3 col-md-3 col-6">
           <div class="sidebar">
 
-            <form method="GET" action="{{ url_for('main.get_favorite') }}" class="form_filter">
+            <form method="GET" action="{{ url_for('main.get_favorite') }}" class="form_filter" id="formFilter">
+              <input type="hidden" name="search" id="search2"
+                  value="{{ request.args.get('search') if request.args.get('search') else '' }}" >
               {% for block_idx, (block, filters) in indexed_filter_dict %}
               <h5>
                 <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button" data-index="{{ block_idx }}">
@@ -34,36 +42,43 @@
               </h5>
               <div class="filter-container" data-index="{{ block_idx }}" style="display: block;">
                 {% for filter in filters %}
-                <label><input type="checkbox" class="filter-label" name="filter" value="{{ filter }}" {% if filter in select %}checked{% endif %}>{{ filter }}</label>
+                <label><input type="checkbox" class="filter-label" name="filter" value="{{ filter }}" {% if filter in
+                  select %}checked{% endif %}>{{ filter }}</label>
                 <br>
                 {% endfor %}
               </div>
               {% endfor %}
               <h5>
-                <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button" data-index="duration">
+                <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button"
+                  data-index="duration">
                 Длительность(ч)
               </h5>
-              <div class="filter-container row" data-index="duration" style="display: block;" >
-                <div class="col-md-3 col-6" >
-                  <label><input type="number" name="duration_from" placeholder="От:" min="0"></label>
+              <div class="filter-container row" data-index="duration" style="display: block;">
+                <div class="col-md-3 col-6">
+                  <label><input type="number" name="duration_from" placeholder="От:" min="0"
+                      value="{{ request.args.get('duration_from') if request.args.get('duration_from') else '' }}"></label>
                 </div>
                 <div class="col-md-3 col-6">
-                  <label><input type="number" name="duration_to" placeholder="До:" min="0"></label>
+                  <label><input type="number" name="duration_to" placeholder="До:" min="0"
+                      value="{{ request.args.get('duration_to') if request.args.get('duration_to') else '' }}"></label>
                 </div>
               </div>
               <h5>
-                <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button" data-index="price">
+                <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button"
+                  data-index="price">
                 Цена(₽)
               </h5>
               <div class="filter-container row" data-index="price" style="display: block;">
-                <div class="col-md-6 col-6" >
-                  <label><input type="number" name="price_from" placeholder="От:"  min="0"></label>
+                <div class="col-md-6 col-6">
+                  <label><input type="number" name="price_from" placeholder="От:" min="0"
+                      value="{{ request.args.get('price_from') if request.args.get('price_from') else '' }}"></label>
                 </div>
                 <div class="col-md-6">
-                  <label><input type="number" name="price_to" placeholder="До:"  min="0"></label>
+                  <label><input type="number" name="price_to" placeholder="До:" min="0"
+                      value="{{ request.args.get('price_to') if request.args.get('price_to') else '' }}"></label>
                 </div>
               </div>
-              <input type="hidden" name="page" value="{{ page }}"/>
+              <input type="hidden" name="page" value="1"/>
               <button type="submit">Применить фильтры</button>
             </form>
 
@@ -109,4 +124,17 @@
 </div>
 </body>
 </html>
+<script>
+  $(document).ready(function () {
+    $('#searchForm').submit(function (e) {
+      e.preventDefault(); // Предотвращаем отправку формы по умолчанию
+      console.log(2)
+      $('#formFilter').unbind('submit').submit();
+    });
+    $('#search').on('input', function() {
+        console.log(3)
+            $('#search2').val($(this).val());
+        });
+  });
+</script>
 {% endblock %}
