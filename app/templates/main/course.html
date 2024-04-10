@@ -14,14 +14,14 @@
             <a href="{{ course.link }}" target="_blank" class="course-link">{{ course.name }}</a>
         </h2>
         {% if course.id in favs %}
-            <form method="POST" action="{{ url_for('main.course', id=course.id) }}">
+            <form method="POST" action="{{ url_for('main.remove_favorite', id=course.id) }}">
                 <input type="hidden" name="course_id" value="{{ course.id }}">
                 <button class="btn favs">
                     <i class="fas fa-heart fa-lg icon-adjust"></i>
                 </button>
             </form>
         {% else %}
-            <form method="POST" action="{{ url_for('main.course', id=course.id) }}">
+            <form method="POST" action="{{ url_for('main.add_favorite', id=course.id) }}">
                 <input type="hidden" name="course_id" value="{{ course.id }}">
                 <button class="btn favs">
                     <i class="fa-regular fa-heart fa-lg icon-adjust"></i>
