@@ -81,6 +81,7 @@ def get_favorite():
     filtered_courses = filtered_courses.paginate(page, current_app.config['COURSE_PER_PAGE'], False)
     filters = {
         'search': request.args.get('search'),
+        'sort_by': request.args.get('sort_by'),
         'filter': selected_filters,
         'duration_from': request.args.get('duration_from'),
         'duration_to': request.args.get('duration_to'),
@@ -133,6 +134,7 @@ def courses():
     filtered_courses = filtered_courses.paginate(page, current_app.config['COURSE_PER_PAGE'], False)
     filters = {
         'search': request.args.get('search'),
+        'sort_by': request.args.get('sort_by'),
         'filter': selected_filters,
         'duration_from': request.args.get('duration_from'),
         'duration_to': request.args.get('duration_to'),

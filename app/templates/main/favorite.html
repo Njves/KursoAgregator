@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/courses.css') }}">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-<script src="{{ url_for('static', filename='script/filters.js') }}"></script>
 <body>
 <div class="main">
   <h2>Список избранных курсов</h2>
@@ -35,6 +34,21 @@
             <form method="GET" action="{{ url_for('main.get_favorite') }}" class="form_filter" id="formFilter">
               <input type="hidden" name="search" id="search2"
                   value="{{ request.args.get('search') if request.args.get('search') else '' }}" >
+                  <h5>
+                    <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button"
+                      data-index="select-sort">
+                      Сортировать
+                  </h5>
+                  <div class="filter-container" data-index="select-sort" id="selectContainer" style="display: block;">
+                    {% set sort_by_value = request.args.get('sort_by') %}
+
+                    <select class="form-select" name="sort_by" id="sortSelect">
+                        <option value="price_asc" {% if sort_by_value == "price_asc" %} selected {% endif %}>Дешевые</option>
+                        <option value="price_desc" {% if sort_by_value == "price_desc" %} selected {% endif %}>Дорогие</option>
+                        <option value="duration_asc" {% if sort_by_value == "duration_asc" %} selected {% endif %}>Короткие</option>
+                        <option value="duration_desc" {% if sort_by_value == "duration_desc" %} selected {% endif %}>Длинные</option>
+                    </select>
+                  </div>
               {% for block_idx, (block, filters) in indexed_filter_dict %}
               <h5>
                 <img src="{{ url_for('static', filename='icon/chevron-down.svg') }}" width="25" class="img_button" data-index="{{ block_idx }}">
