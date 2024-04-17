@@ -3,10 +3,11 @@ import csv
 import pathlib
 from typing import List
 
-from flask import Response, current_app
+from flask import Response, current_app, render_template
 from sqlalchemy import text
 
 from app import db
+from app.auth.emal import send_email
 from app.models import Course, Technology, School, User
 from app.task import bp
 from app.task.validate import validate_data
@@ -106,28 +107,37 @@ def parse():
 
 @bp.route('/notify', methods=['GET'])
 def notify_subscribed_users():
-    new_courses: List[Course] = Course.query.limit(10).all()
-    query = """SELECT technology_id, u.email FROM subscribe_user_technology JOIN "user" u on u.id = subscribe_user_technology.user_id ORDER BY technology_id;"""
-    result = db.session.execute(query).fetchall()
-    technologies = (technology_id for technology_id, email in result)
-    bindEmails = {}
-    for technology_id, email in result:
-        if technology_id in result:
-            bindEmails[technology_id].append(email)
-        else:
-            bindEmails[technology_id] = [email]
+    # new_courses: List[Course] = Course.query.limit(10).all()
+    # query = """SELECT technology_id, u.email FROM subscribe_user_technology JOIN "user" u on u.id = subscribe_user_technology.user_id ORDER BY technology_id;"""
+    # result = db.session.execute(query).fetchall()
+    # technologies = (technology_id for technology_id, email in result)
+    # bindEmails = {}
+    # for technology_id, email in result:
+    #     if technology_id in result:
+    #         bindEmails[technology_id].append(email)
+    #     else:
+    #         bindEmails[technology_id] = [email]
+    # emails = {}
+    # for course in new_courses:
+    #     if any([technology_id in technologies for technology_id in course.technologies]):
+    #         for technology_id in course.technologies:
+    #             emails = [bindEmails[technology_id]]
+    #
     emails = {}
-    for course in new_courses:
-        if any([technology_id in technologies for technology_id in course.technologies]):
-            for technology_id in course.technologies:
-                emails = [bindEmails[technology_id]]
-    print(emails)
+    emails['mrpostik@gmail.com'] = [Course.query.all()[0:10]]
+    for receiver, courses in emails.items():
+        send_mail(receiver, courses)
+
     return {}, 200
 
 
 
-def send_mail():
-    pass
+def send_mail(receiver_email: str, courses: List[Course]):
+    send_email('[KursoAgreagator] Подписка',
+               sender=current_app.config['ADMINS'][0],
+               recipients=[receiver_email],
+               text_body=None,
+               html_body=render_template('email/new_courses_message.html', receiver_email=receiver_email, courses=courses))
 
 def add_technology(title: str):
     technology = Technology(title=title)

@@ -30,7 +30,7 @@ def review_by_school_id(school_id):
     reviews = [i for i in school.reviews]
     school_rating = 0
     if reviews:
-        school_rating = sum([review.rating for review in reviews]) / len(reviews)
+        school_rating = round(sum([review.rating for review in reviews]) / len(reviews), 2)
     return render_template('review/review_school.html', school=school, reviews=reviews, school_rating=school_rating)
 
 

@@ -11,7 +11,6 @@ from app.main.hours_to_time import format_time
 from app.models import User, Course, Technology, School
 from app.similar import get_similar_course
 
-
 @bp.route('/', methods=['GET'])
 def index():
     """
