@@ -11,6 +11,16 @@ def filter_courses(filter_dict, selected_filters, query=None):
     duration_from = request.args.get('duration_from')
     duration_to = request.args.get('duration_to')
     search_str = request.args.get('search')
+    sort_by = request.args.get('sort_by')
+    if sort_by == 'duration_asc':
+        query = query.order_by(cast(Course.duration, Integer))
+    if sort_by == 'duration_desc':
+        query = query.order_by(cast(Course.duration, Integer).desc())
+    elif sort_by == 'price_desc':
+        query = query.order_by(Course.price.desc())
+    else:
+        query = query.order_by(Course.price)
+
     select_filter_dict = {key: [] for key in filter_dict.keys()}
     for item in selected_filters:
         for key, value in filter_dict.items():
