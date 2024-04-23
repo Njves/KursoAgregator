@@ -141,12 +141,10 @@
 <script>
   $(document).ready(function () {
     $('#searchForm').submit(function (e) {
-      e.preventDefault(); // Предотвращаем отправку формы по умолчанию
-      console.log(2)
+      e.preventDefault();
       $('#formFilter').unbind('submit').submit();
     });
     $('#search').on('input', function() {
-        console.log(3)
             $('#search2').val($(this).val());
         });
   });

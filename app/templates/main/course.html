@@ -14,19 +14,15 @@
             <a href="{{ course.link }}" target="_blank" class="course-link">{{ course.name }}</a>
         </h2>
         {% if course.id in favs %}
-            <form method="POST" action="{{ url_for('main.remove_favorite', id=course.id) }}">
                 <input type="hidden" name="course_id" value="{{ course.id }}">
-                <button class="btn favs">
+                <button class="btn favs is_fav">
                     <i class="fas fa-heart fa-lg icon-adjust"></i>
                 </button>
-            </form>
         {% else %}
-            <form method="POST" action="{{ url_for('main.add_favorite', id=course.id) }}">
                 <input type="hidden" name="course_id" value="{{ course.id }}">
-                <button class="btn favs">
+                <button class="btn favs not_fav">
                     <i class="fa-regular fa-heart fa-lg icon-adjust"></i>
                 </button>
-            </form>
         {% endif %}
     </div>
     <a href="{{ course.link }}" target="_blank" >Ссылка на курс</a>
@@ -119,6 +115,34 @@
     })
     {% endif %}
 
+    const notLiked = '<i class="fa-regular fa-heart icon-adjust"></i>';
+    const liked = '<i class="fas fa-heart icon-adjust"></i>'
+    const buttons = document.querySelectorAll(".favs");
+    buttons.forEach((button) => {
+        button.addEventListener('click', (async event => {
+            const formData = new FormData();
+            formData.append('course_id', button.id.split('_')[1])
+            if (button.classList.contains('not_fav')) {
+
+                const res = await fetch('/favorite', {
+                    method: 'POST',
+                    body: formData
+                })
+                button.innerHTML = liked
+                button.classList.remove('not_fav')
+                button.classList.add('is_fav')
+
+            } else {
+                const res = await fetch('/remove_favorite', {
+                    method: 'POST',
+                    body: formData
+                })
+                button.innerHTML = notLiked;
+                button.classList.remove('is_fav')
+                button.classList.add('not_fav')
+            }
+        }))
+    })
 </script>
 </body>
 
