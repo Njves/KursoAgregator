@@ -1,13 +1,14 @@
 <div class="card container m-3 review-item">
   <div class="title-chips">
-    <h3 class="card-title">{{ review.course[0].owner.title }}</h3>
+    <h3 class="card-title" ><a class="card-link" href="/school/{{review.school[0].id}}/reviews">{{ review.course[0].owner.title }}</a></h3>
     <div class="chips">
       <span class="chip chip-course">Курсы</span>
       <span class="chip chip-review">Отзывы</span>
     </div>
   </div>
+  <h4 class="card-title" ><a class="card-link" href="/course/{{review.course[0].id}}">{{ review.course[0].name }}</a></h4>
   <span>{{ review.text }}</span>
-
+  
   <h5 class="review-site">Сайт онлайн-школы - {% for course in review.course %}
     <a class="course-hyperlink" href="{{ course.link }}">{{ course.link }}</a>
     {% endfor %}

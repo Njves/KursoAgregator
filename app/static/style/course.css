@@ -40,7 +40,6 @@ main h3{
     color: var(--text-color-tag);
 }
 .course-link {
-    text-decoration: none; 
     color: var(--text-color);
 }
 .pages {

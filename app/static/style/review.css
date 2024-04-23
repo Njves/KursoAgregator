@@ -30,8 +30,14 @@ card {
     padding-bottom: 4px;
 }
 
-.review-item .card-hyperlink {
-    text-decoration: none;
+.review-item .card-title .card-link {
+    color: var(--text-color);
+    text-decoration: underline !important;
+}
+
+.review-item .course-hyperlink {
+    color: #0d6efd !important;
+    text-decoration: underline !important;
 }
 
 .author-rating {
