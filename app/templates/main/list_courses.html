@@ -101,10 +101,9 @@
                 <div class="col-md-9 col-6">
                     <div class="main-content row">
                         {% for course in courses %}
-                        {% if loop.index+1 is divisibleby(2) %}
                         <div class="courses-container col-md-6 position-relative">
                             <h5><a class="nav-link" href="{{ url_for('main.course', id=course.id) }}">{{ course.name }}</a></h5>
-                            <p>{{ course.description[:50] + '...' if course.description|length > 50 else course.description }}</p>
+                            <p>{{ course.description[:45] + '...' if course.description|length > 45 else course.description }}</p>
                             {% if course.id in favs %}
                             <button id="button_{{ course.id }}" class="btn favs is_fav position-absolute top-0 end-0">
                                 <i class="fas fa-heart icon-adjust"></i>
@@ -114,13 +113,11 @@
                                 <i class="fa-regular fa-heart icon-adjust"></i>
                             </button>
                             {% endif %}
+                            <h5 style="text-align: left;">{{ "Цена: {} ₽".format(course.price|default(0)|int) 
+                                if course.price != 0 else "Бесплатный курс" }}</h5>
+                            <h5 style="text-align: left;">Длительность: {{ course.duration }}</h5>
+                            
                         </div>
-                        {% else %}
-                        <div class="courses-container col-md-6">
-                            <h5>{{ course.name }}</a>
-                                <p>{{ course.description }}</p>
-                            </h5>
-                            {% endif %}
                             {% endfor %}
                             <div class="pages">
                                 {% if prev_url %}
@@ -131,7 +128,6 @@
                                 <a href="{{ next_url }}">Следующая страница</a>
                                 {% endif %}
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>

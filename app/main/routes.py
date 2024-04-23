@@ -78,6 +78,8 @@ def get_favorite():
     indexed_filter_dict = enumerate(filter_dict.items())
     filtered_courses = filter_courses(filter_dict, selected_filters, current_user.favorite_courses).order_by(Course.date_start.desc())
     filtered_courses = filtered_courses.paginate(page, current_app.config['COURSE_PER_PAGE'], False)
+    for course in filtered_courses.items:
+        course.duration = format_time(int(course.duration))
     filters = {
         'search': request.args.get('search'),
         'sort_by': request.args.get('sort_by'),
@@ -131,6 +133,8 @@ def courses():
     indexed_filter_dict = enumerate(filter_dict.items())
     filtered_courses = filter_courses(filter_dict, selected_filters).order_by(Course.date_start.desc())
     filtered_courses = filtered_courses.paginate(page, current_app.config['COURSE_PER_PAGE'], False)
+    for course in filtered_courses.items:
+        course.duration = format_time(int(course.duration))
     filters = {
         'search': request.args.get('search'),
         'sort_by': request.args.get('sort_by'),
