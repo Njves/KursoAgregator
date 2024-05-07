@@ -17,9 +17,8 @@ def profile_view(user_id):
 @bp.route('/user/<int:user_id>/password/update', methods=['POST'])
 @login_required
 def update_password_profile(user_id):
-    form = request.form
-    password = form.get('password')
-    password_repeat = form.get('password_repeat')
+    password = request.form.get('inputPassword')
+    password_repeat = request.form.get('inputPasswordRepeat')
     if password != password_repeat:
         return redirect(url_for('user_bp.profile_view', user_id=user_id))
     user = User.query.filter_by(id=user_id).first()

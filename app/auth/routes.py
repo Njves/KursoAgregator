@@ -31,11 +31,17 @@ def login():
 @bp.route("/register", methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        reg_login, reg_password = request.form.get('username'), request.form.get('password')
+        reg_login, reg_password, email = request.form.get('username'), request.form.get('password'), request.form.get('email')
         if len(reg_login) > 128 or len(reg_password) > 128:
             flash('Слишком длинные значения')
             return redirect(request.referrer)
-        user = User(username=reg_login)
+        if User.query.filter_by(username=reg_login).first() is not None:
+            flash('Логин уже занят')
+            return redirect(request.referrer)
+        if not email:
+            flash('Введите email')
+            return redirect(request.referrer)
+        user = User(username=reg_login, email=email)
         user.set_password(reg_password)
         db.session.add(user)
         db.session.commit()
@@ -52,9 +58,13 @@ def forgot_password():
 
 @bp.route('/forgot', methods=['POST'])
 def forgot_send():
-    if email := request.form.get('email'):
+    email = request.form.get('email')
+    user = User.query.filter_by(email=email).first()
+    if user is not None:
         flash('На вашу почту отправленно сообщение с инструкциями по восстановлению пароля')
-        send_password_reset_email(User.query.filter_by(email=email).first())
+        send_password_reset_email(user)
+    else:
+        flash('Нет пользователя с такой почтой')
     return redirect(url_for('auth.forgot_password'))
 
 @bp.route('/reset/<token>')

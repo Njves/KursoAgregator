@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
 <link href="{{ url_for('static', filename='style/login.css') }}" rel="stylesheet">
-{% include "flash.html" %}
 <form class="container-fluid" name="buttons_auth_reg" method="GET">
     <div class="row justify-content-center" style="margin-top: 40px;">
         <a class="container-buttons" href="{{ url_for('auth.login') }}" id="registration_btn">Перейти в логин</a>
@@ -20,15 +19,15 @@
                     <form method="POST" action="{{ url_for('auth.register') }}">
                         <div class="form-group mb-3">
                             <label for="username">Имя пользователя:</label>
-                            <input type="text" class="form-control" name="username" id="username" placeholder="Введите имя пользователя">
+                            <input type="text" class="form-control" name="username" id="username" placeholder="Введите имя пользователя" required>
                         </div>
                         <div class="form-group mb-3">
                             <label for="email">Электронная почта</label>
-                            <input type="email" class="form-control" name="email" id="email" placeholder="Введите электронную почту">
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Введите электронную почту" required>
                         </div>
                         <div class="form-group mb-3">
                             <label for="password">Пароль:</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Введите пароль">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Введите пароль" minlength="6" required>
                         </div>
                         <button type="submit" class="btn btn-primary mt-2">Зарегистрироваться</button>
                     </form>

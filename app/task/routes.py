@@ -24,7 +24,7 @@ def init(app):
 
 def get_school(app):
     with app.app_context():
-        return School.query.filter_by(title='Geekbrains').first(), School.query.filter_by(title='Hexlet'),\
+        return School.query.filter_by(title='Geekbrains').first(), School.query.filter_by(title='Hexlet').first(),\
             School.query.filter_by(title='Stepik').first(),\
             School.query.filter_by(title='TopAcademy').first()
 
@@ -34,9 +34,8 @@ def parse():
     Ручка для парсинга файлов .csv с курсами
     :return: Response(200) - если все успешно добавлено
     """
-    init(current_app)
     current_app.logger.info('Запросили парсинг')
-    if all(get_school(current_app)):
+    if any(school is None for school in get_school(current_app)):
         init(current_app)
     __parsers_names = {School.query.filter_by(title='Geekbrains').first(): 'geekbrains.csv',
                        School.query.filter_by(title='Hexlet').first(): 'hexlet.csv',

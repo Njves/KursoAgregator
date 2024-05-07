@@ -19,11 +19,12 @@
                 </div>
             </div>
         </div>
-        <form class="mb-3" action="{{ url_for('user_bp.profile_view', user_id=user.id) }}" method="POST">
+        <form class="mb-3" action="{{ url_for('user_bp.update_password_profile', user_id=user.id) }}" method="POST">
             <div class="row">
                 <div class="col-6 mb-3">
                     <label for="inputPassword" class="form-label">Новый пароль</label>
-                    <input type="password" id="inputPassword" class="form-control" aria-describedby="passwordHelpBlock">
+                    <input type="password" id="inputPassword" name="inputPassword" class="form-control" aria-describedby="passwordHelpBlock">
+
                     <div id="passwordHelpBlock" class="form-text">
                         Пароль должен быть не меньше 6 символов
                     </div>
@@ -33,8 +34,8 @@
                 <div class="col-6">
 
                     <label for="inputPasswordRepeat" class="form-label">Повторите пароль</label>
-                    <input type="password" id="inputPasswordRepeat" class="form-control"
-                        aria-describedby="passwordHelpBlock">
+                    <input type="password" id="inputPasswordRepeat" name="inputPasswordRepeat" class="form-control" aria-describedby="passwordHelpBlock">
+
                     <div id="passwordRepeatHelpBlock" class="form-text text-danger" style="display: none">
                         Пароли не совпадают
                     </div>

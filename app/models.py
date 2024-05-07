@@ -47,8 +47,8 @@ class Review(db.Model):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(128), nullable=False)
-    email = db.Column(db.String(128), nullable=False, default="")
+    username = db.Column(db.String(128), nullable=False, unique=True)
+    email = db.Column(db.String(128), nullable=False, default="", unique=True)
     password_hash = db.Column(db.String(256), nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow, comment='date of registation')
     last_seen = db.Column(db.DateTime, default=datetime.utcnow, comment='last seen user in online')
