@@ -2,7 +2,7 @@ import unittest
 
 from app import create_app, db
 from app.models import Review, Course, School, User, Technology
-from course_filtering import filter_courses
+from app.main.course_filtering import filter_courses
 from tests.config import TestConfig
 
 
@@ -34,10 +34,10 @@ class TestRegistration(unittest.TestCase):
         school3 = School(title="Tech Masters", description="Empowering tech enthusiasts through education")
 
         # Creating instances of User
-        user1 = User(username="john_doe")
+        user1 = User(username="john_doe",email="email1")
         user1.set_password("password123")
 
-        user2 = User(username="jane_doe")
+        user2 = User(username="jane_doe2",email="email2")
         user2.set_password("securepass")
 
         # Creating instances of Course

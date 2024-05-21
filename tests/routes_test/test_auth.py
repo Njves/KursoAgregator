@@ -43,7 +43,7 @@ class TestRegistration(unittest.TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_registration_failed_user_already_exists(self):
-        data = {"username": "test_user", "password": "password123", "password_repeat": 'password123'}
+        data = {"username": "test_user2", "password": "password123", "password_repeat": 'password123', "email": "test1"}
         account = User(username='test_user')
         account.set_password('test')
         db.session.add(account)
@@ -52,8 +52,8 @@ class TestRegistration(unittest.TestCase):
         self.assertEqual(error_response.status_code, 302)
 
     def test_registration_failed_password_not_same(self):
-        data = {"username": "test_user", "password": "password123", "password_repeat": 'password1234',
-                }
+        data = {"username": "test_user", "password": "password123", "password_repeat": 'password123',
+                "email": "test2"}
         response = self.client.post(url_for('auth.register'), data=data)
         self.assertEqual(response.status_code, 302)
 

@@ -45,8 +45,9 @@ class TestSimilar(unittest.TestCase):
 
     def test_similar(self):
         with self.app_context:
-            similar = get_similar_course(self.app_context, 1)
-            print(similar)
+            all_courses = Course.query.all()
+            similar_course = get_similar_course(all_courses[0], all_courses)
+            print(similar_course)
 
     def tearDown(self):
         db.session.remove()
