@@ -6,9 +6,9 @@ from app.main.course_filtering import filter_courses
 from tests.config import TestConfig
 
 
-class TestRegistration(unittest.TestCase):
+class TestCourses(unittest.TestCase):
     """
-        Тестирование мемов
+        Тестирование курсов
         """
 
     def setUp(self):

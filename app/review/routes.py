@@ -16,7 +16,7 @@ def review_by_course_id(course_id):
     if not course:
         return flask.abort(status=404)
     reviews = course.reviews
-    return render_template('review/review.html', course=course, reviews=reviews)
+    return render_template('review/reviews.html', course=course, reviews=reviews)
 
 
 @bp.route('/school/<int:school_id>/reviews', methods=['GET'])

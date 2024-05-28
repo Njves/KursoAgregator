@@ -9,7 +9,7 @@ from tests.config import TestConfig
 
 class TestRegistration(unittest.TestCase):
     """
-        Тестирование мемов
+        Тестирование регистрации
         """
 
     def setUp(self):

@@ -12,7 +12,7 @@ def profile_view(user_id):
     user = User.query.get_or_404(user_id)
     subscribed_technologies = [technology.id for technology in user.subscribed_technologies]
     technologies = Technology.query.all()
-    return render_template('user/main.html', user=user, subscribed_technologies=subscribed_technologies, technologies=technologies)
+    return render_template('user/main.html', user=user, reviews=user.reviews, subscribed_technologies=subscribed_technologies, technologies=technologies)
 
 @bp.route('/user/<int:user_id>/password/update', methods=['POST'])
 @login_required

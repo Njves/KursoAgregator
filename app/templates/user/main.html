@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/profile.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/review.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/profile.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/review.css') }}">
 <div class="container mt-2">
     <h2>Личный кабинет</h2>
     <h4>Пользователь {{ user.username }}</h4>
@@ -10,13 +10,10 @@
             <div class="mb-3">
                 <label for="inputEmail" class="form-label">Электронная почта</label>
                 <div class="input-group">
-                    <input type="email" class="form-control" id="inputEmail" value="{{ user.email }}"
-                        placeholder="name@examle.com" aria-label="Электронная почта" aria-describedby="basic-addon1">
+                    <input type="email" class="form-control" id="inputEmail" value="{{ user.email }}" placeholder="name@example.com" aria-label="Электронная почта" aria-describedby="basic-addon1">
                     <button class="btn btn-primary">Подтвердить почту</button>
                 </div>
-                <div id="emailSubmitStatus" class="form-text text-danger">
-                    Почта не подтверждена
-                </div>
+                <div id="emailSubmitStatus" class="form-text text-danger">Почта не подтверждена</div>
             </div>
         </div>
         <form class="mb-3" action="{{ url_for('user_bp.update_password_profile', user_id=user.id) }}" method="POST">
@@ -24,21 +21,14 @@
                 <div class="col-6 mb-3">
                     <label for="inputPassword" class="form-label">Новый пароль</label>
                     <input type="password" id="inputPassword" name="inputPassword" class="form-control" aria-describedby="passwordHelpBlock">
-
-                    <div id="passwordHelpBlock" class="form-text">
-                        Пароль должен быть не меньше 6 символов
-                    </div>
+                    <div id="passwordHelpBlock" class="form-text">Пароль должен быть не меньше 6 символов</div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-6">
-
                     <label for="inputPasswordRepeat" class="form-label">Повторите пароль</label>
                     <input type="password" id="inputPasswordRepeat" name="inputPasswordRepeat" class="form-control" aria-describedby="passwordHelpBlock">
-
-                    <div id="passwordRepeatHelpBlock" class="form-text text-danger" style="display: none">
-                        Пароли не совпадают
-                    </div>
+                    <div id="passwordRepeatHelpBlock" class="form-text text-danger" style="display: none">Пароли не совпадают</div>
                     <button id="buttonUpdatePassword" class="btn btn-primary mt-2" disabled>Изменить пароль</button>
                 </div>
             </div>
@@ -51,11 +41,8 @@
                 {% for technology in technologies %}
                 <div class="col-sm-6">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="technology{{ technology.id }}"
-                            name="technologies[]" value="{{ technology.id }}" {% if technology.id in
-                            subscribed_technologies %} checked {% endif %}>
-                        <label class="form-check-label" for="technology{{ technology.id }}">{{ technology.title
-                            }}</label>
+                        <input type="checkbox" class="form-check-input" id="technology{{ technology.id }}" name="technologies[]" value="{{ technology.id }}" {% if technology.id in subscribed_technologies %} checked {% endif %}>
+                        <label class="form-check-label" for="technology{{ technology.id }}">{{ technology.title }}</label>
                     </div>
                 </div>
                 {% endfor %}
@@ -65,45 +52,35 @@
     </div>
     <div>
         <h4 class="container-fluid w-50 d-flex justify-content-center">Ваши отзывы</h4>
-        {% for review in user.reviews %}
+        {% for review in reviews %}
         {% include "review/review_item.html" %}
         {% endfor %}
     </div>
 </div>
 <script>
-    const inputPassword = document.getElementById('inputPassword')
-    const inputPasswordRepeat = document.getElementById('inputPasswordRepeat')
-    const passwordMessage = document.getElementById('passwordRepeatHelpBlock')
-    const buttonUpdateMessage = document.getElementById('buttonUpdatePassword')
-    inputPassword.addEventListener('input', () => {
+document.addEventListener('DOMContentLoaded', () => {
+    const inputPassword = document.getElementById('inputPassword');
+    const inputPasswordRepeat = document.getElementById('inputPasswordRepeat');
+    const passwordMessage = document.getElementById('passwordRepeatHelpBlock');
+    const buttonUpdatePassword = document.getElementById('buttonUpdatePassword');
+
+    function validatePassword() {
         if (inputPassword.value.length < 6) {
-            passwordMessage.style.display = "block"
-            passwordMessage.innerHTML = 'Пароль слишком короткий'
-            buttonUpdateMessage.disabled = true
-        }
-        else if (inputPassword.value !== inputPasswordRepeat.value) {
-            passwordMessage.style.display = "block"
-            passwordMessage.innerHTML = 'Пароли не совпадают'
-            buttonUpdateMessage.disabled = true
+            passwordMessage.style.display = "block";
+            passwordMessage.innerHTML = 'Пароль слишком короткий';
+            buttonUpdatePassword.disabled = true;
+        } else if (inputPassword.value !== inputPasswordRepeat.value) {
+            passwordMessage.style.display = "block";
+            passwordMessage.innerHTML = 'Пароли не совпадают';
+            buttonUpdatePassword.disabled = true;
         } else {
-            passwordMessage.style.display = "none"
-            buttonUpdateMessage.disabled = false
+            passwordMessage.style.display = "none";
+            buttonUpdatePassword.disabled = false;
         }
-    })
-    inputPasswordRepeat.addEventListener('input', () => {
-        if (inputPassword.value.length < 6) {
-            passwordMessage.style.display = "block"
-            passwordMessage.innerHTML = 'Пароль слишком короткий'
-            buttonUpdateMessage.disabled = true
-        }
-        else if (inputPassword.value !== inputPasswordRepeat.value) {
-            passwordMessage.style.display = "block"
-            passwordMessage.innerHTML = 'Пароли не совпадают'
-            buttonUpdateMessage.disabled = true
-        } else {
-            passwordMessage.style.display = "none"
-            buttonUpdateMessage.disabled = false
-        }
-    })
+    }
+
+    inputPassword.addEventListener('input', validatePassword);
+    inputPasswordRepeat.addEventListener('input', validatePassword);
+});
 </script>
 {% endblock %}
